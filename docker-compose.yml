@@ -1,0 +1,87 @@
+networks:
+  dev:
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./build/Dockerfile
+    container_name: avito-pr-api-backend
+    command: ["sh", "-c", "go run /usr/src/app/cmd/main.go"]
+    depends_on:
+      - postgres
+    environment:
+      API_PORT: "${API_PORT}"
+      DB_URL: "${DB_URL}"
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    networks:
+      - dev
+
+  postgres:
+    image: postgres:latest
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=50"
+      - "-c"
+      - "shared_buffers=64MB"
+      - "-c"
+      - "effective_cache_size=4GB"
+      - "-c"
+      - "work_mem=16MB"
+      - "-c"
+      - "maintenance_work_mem=512MB"
+      - "-c"
+      - "random_page_cost=1.1"
+      - "-c"
+      - "temp_file_limit=10GB"
+      - "-c"
+      - "log_min_duration_statement=200ms"
+      - "-c"
+      - "idle_in_transaction_session_timeout=10s"
+      - "-c"
+      - "lock_timeout=1s"
+      - "-c"
+      - "statement_timeout=60s"
+      - "-c"
+      - "shared_preload_libraries=pg_stat_statements"
+      - "-c"
+      - "pg_stat_statements.max=10000"
+      - "-c"
+      - "pg_stat_statements.track=all"
+    container_name: avito-pr-api-postgres
+    environment:
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_DB: "${DB_NAME}"
+      POSTGRES_PORT: "${DB_PORT}"
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${DB_USERNAME} -d $${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 1m
+    restart: unless-stopped
+    networks:
+      - dev
+
+  migrate:
+    image: migrate/migrate
+    container_name: avito-pr-api-migrate
+    volumes:
+      - ./db/migrations:/migrations
+    command: [ "-path", "./migrations", "-database",  "${DB_URL}", "up" ]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - dev
+
+
+volumes:
+  postgres_data:

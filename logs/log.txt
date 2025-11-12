@@ -1,0 +1,11 @@
+{"level":"error","timestamp":"2025-11-12T18:05:34.038+0300","caller":"db/connect_to_psql.go:20","msg":"unable to ping database: failed to connect to `user=nedokyrill database=`: /var/run/postgresql/.s.PGSQL.5432 (/var/run/postgresql): server error: FATAL: role \"nedokyrill\" does not exist (SQLSTATE 28000)\n","pid":77104}
+{"level":"fatal","timestamp":"2025-11-12T18:05:34.039+0300","caller":"app/app.go:35","msg":"error connecting to database, exiting...","pid":77104}
+{"level":"error","timestamp":"2025-11-12T18:05:55.332+0300","caller":"db/connect_to_psql.go:20","msg":"unable to ping database: failed to connect to `user=nedokyrill database=`: /var/run/postgresql/.s.PGSQL.5432 (/var/run/postgresql): server error: FATAL: role \"nedokyrill\" does not exist (SQLSTATE 28000)\n","pid":77312}
+{"level":"fatal","timestamp":"2025-11-12T18:05:55.332+0300","caller":"app/app.go:35","msg":"error connecting to database, exiting...","pid":77312}
+{"level":"error","timestamp":"2025-11-12T18:06:20.330+0300","caller":"db/connect_to_psql.go:20","msg":"unable to ping database: failed to connect to `user=nedokyrill database=`: /var/run/postgresql/.s.PGSQL.5432 (/var/run/postgresql): server error: FATAL: role \"nedokyrill\" does not exist (SQLSTATE 28000)\n","pid":77614}
+{"level":"fatal","timestamp":"2025-11-12T18:06:20.330+0300","caller":"app/app.go:35","msg":"error connecting to database, exiting...","pid":77614}
+{"level":"info","timestamp":"2025-11-12T18:08:18.856+0300","caller":"app/app.go:60","msg":"Shutting down server...","pid":78275}
+{"level":"info","timestamp":"2025-11-12T18:08:18.856+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":78275}
+{"level":"info","timestamp":"2025-11-12T21:36:53.708+0300","caller":"db/connect_to_psql.go:24","msg":"connected to Postgres successfully","pid":27683}
+{"level":"info","timestamp":"2025-11-12T21:37:03.719+0300","caller":"app/app.go:61","msg":"Shutting down server...","pid":27683}
+{"level":"info","timestamp":"2025-11-12T21:37:03.719+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":27683}
