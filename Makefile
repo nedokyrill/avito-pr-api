@@ -14,11 +14,11 @@ run:build-app
 	@./.bin/app
 
 new-migrate:
-	@migrate create -ext sql -dir db/migrations -seq ${name}
+	@migrate create -ext sql -dir db/migrations ${name}
 
 migrate-up:
-	@migrate -database ${POSTGRESQL_URL} -path db/migrations up
+	@migrate -database ${DB_URL} -path db/migrations up
 
 migrate-down:
-	@migrate -database ${POSTGRESQL_URL} -path db/migrations down 1
+	@migrate -database ${DB_URL} -path db/migrations down 1
 
