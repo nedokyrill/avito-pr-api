@@ -39,3 +39,9 @@ docker-down:
 
 tests:
 	@go test -cover ./...
+
+# ЛИНТИНГ
+
+lint:
+	@golangci-lint run
+

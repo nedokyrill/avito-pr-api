@@ -51,7 +51,7 @@ func (s *PullRequestServiceImpl) MergePullRequest(c *gin.Context) {
 			))
 			return
 		}
-		
+
 		now := time.Now()
 		pr.MergedAt = &now
 		pr.Status = domain.PullRequestStatusMERGED

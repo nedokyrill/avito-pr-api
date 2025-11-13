@@ -30,7 +30,6 @@ func (s *APIServer) Start() {
 	if err := s.httpServer.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		logger.Logger.Fatal(err)
 	}
-
 }
 
 func (s *APIServer) Shutdown(ctx context.Context) error {

@@ -5,7 +5,7 @@ import (
 )
 
 type UserServiceImpl struct {
-	userRepo       storage.UserRepositoryInterface
+	userRepo        storage.UserRepositoryInterface
 	prReviewersRepo storage.PrReviewersRepositoryInterface
 }
 
@@ -14,8 +14,7 @@ func NewUserService(
 	prReviewersRepo storage.PrReviewersRepositoryInterface,
 ) *UserServiceImpl {
 	return &UserServiceImpl{
-		userRepo:       userRepo,
+		userRepo:        userRepo,
 		prReviewersRepo: prReviewersRepo,
 	}
 }
-

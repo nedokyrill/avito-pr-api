@@ -19,6 +19,7 @@ func RandSelectReviewers(members []domain.TeamMember, authorID string, maxCount 
 		return candidates
 	}
 
+	//nolint:gosec // G404: math/rand достаточно для случайного выбора ревьюеров
 	rng := rand.New(rand.NewSource(time.Now().UnixNano()))
 	rng.Shuffle(len(candidates), func(i, j int) {
 		candidates[i], candidates[j] = candidates[j], candidates[i]

@@ -115,6 +115,7 @@ func (s *PullRequestServiceImpl) ReassignReviewer(c *gin.Context) {
 		}
 	}
 
+	//nolint:gosec // G404: math/rand достаточно для случайного выбора ревьюеров
 	rng := rand.New(rand.NewSource(time.Now().UnixNano()))
 	newReviewerID := candidates[rng.Intn(len(candidates))]
 

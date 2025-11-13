@@ -11,7 +11,6 @@ import (
 var Logger *zap.SugaredLogger
 
 func InitLogger() {
-
 	dev := false
 	encoderCfg := zap.NewProductionEncoderConfig()
 	level := zap.NewAtomicLevelAt(zap.InfoLevel)

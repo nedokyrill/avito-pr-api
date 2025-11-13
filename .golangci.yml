@@ -1,0 +1,189 @@
+version: 2
+
+run:
+  # таймаут
+  timeout: 5m
+  
+  # проверка файлов _test.go - вкл
+  tests: true
+  
+  # версия go
+  go: '1.25'
+  
+  # пропускаемые директории
+  skip-dirs:
+    - vendor
+    - internal/generated
+
+output:
+  # формат вывода
+  format: colored-line-number
+  
+  # показывать проблемные строки - вкл
+  print-issued-lines: true
+  
+  # показывать имя линтера - вкл
+  print-linter-name: true
+  
+  # сортировка - вкл
+  sort-results: true
+
+linters:
+  # отключаем линтеры по умолчанию
+  disable-all: true
+  
+  enable:
+    # проверка обработки ошибок
+    - errcheck
+    
+    # стандартный линтер от команды Go
+    - govet
+
+    # много всего
+    - staticcheck
+    
+    # находит неиспользуемый код
+    - unused
+
+    # ищет утечки, следит за безопасностью кода (инъекции, криптография)
+    - gosec
+
+    # проверка закрытия всех sql ресурсов
+    - sqlclosecheck
+
+    # проверка правильной обработки ошибок
+    - errorlint
+    
+    # поиск неправильных названий ошибок
+    - errname
+    
+    # поиск подозрительных возвратов nil
+    - nilerr
+    
+    # поиск возвратов nil, nil
+    - nilnil
+
+    # поиск мест, где можно сделать преаллокейт
+    - prealloc
+    
+    # поиск не нужных конвертаций
+    - unconvert
+    
+    # поиск неиспользуемых параметров функций
+    - unparam
+
+    # измерение цикломатической сложности (количество путей выполнения)
+    - gocyclo
+    
+    # измерение когнитивной сложности (насколько сложно понять код)
+    - gocognit
+    
+    # поиск большой вложенности if
+    - nestif
+
+    # диагностика
+    - gocritic
+    
+    # находит строки которые можно вынести в константы
+    - goconst
+    
+    # находит опечатки
+    - misspell
+    
+    # находит лишние пустые строки
+    - whitespace
+
+    # проверяет правильность использования bytes/strings
+    - mirror
+
+    # не дает делать названия схожие с ключевыми методами go
+    - predeclared
+
+    # проверяет правильную передачу контекста
+    - contextcheck
+
+linters-settings:
+  errcheck:
+    exclude-functions:
+      # игнорируем ошибку при shutdown
+      - (*go.uber.org/zap.SugaredLogger).Sync
+  
+  govet:
+    # вкл все анализаторы
+    enable-all: true
+    disable:
+      - shadow
+  
+  gocyclo:
+    # макс сложность функции
+    min-complexity: 15
+  
+  gocognit:
+    # макс когнитивная сложность
+    min-complexity: 20
+  
+  goconst:
+    # мин длина строки для константы
+    min-len: 3
+    # сколько раз строка должна повториться
+    min-occurrences: 3
+  
+  misspell:
+    locale: US
+  
+  nestif:
+    # макс вложенность if
+    min-complexity: 4
+  
+  gosec:
+    excludes:
+      - G104  # дублирует errcheck
+    config:
+      G201: "99"  # SQL injection
+      G202: "99"
+  
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+      - experimental
+      - opinionated
+    disabled-checks:
+      - whyNoLint
+      - hugeParam
+  
+  prealloc:
+    simple: true
+    range-loops: true
+    for-loops: true
+
+issues:
+  # лимит проблем
+  max-issues-per-linter: 50
+  max-same-issues: 3
+  
+  # показывать все (не только новые)
+  new: false
+  
+  # исключения
+  exclude-rules:
+    # тесты - можно сложнее
+    - path: _test\.go
+      linters:
+        - gocyclo
+        - gocognit
+        - nestif
+    
+    # игнорируем сгенеренный код
+    - path: internal/generated/
+      linters:
+        - all
+    
+    # игнорируем sql миграции
+    - path: db/migrations/
+      linters:
+        - all
+  
+  exclude-use-default: false
+  exclude-case-sensitive: false

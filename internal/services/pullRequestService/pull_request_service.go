@@ -24,4 +24,3 @@ func NewPullRequestService(
 		teamRepo:        teamRepo,
 	}
 }
-
