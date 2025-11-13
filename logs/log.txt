@@ -9,3 +9,48 @@
 {"level":"info","timestamp":"2025-11-12T21:36:53.708+0300","caller":"db/connect_to_psql.go:24","msg":"connected to Postgres successfully","pid":27683}
 {"level":"info","timestamp":"2025-11-12T21:37:03.719+0300","caller":"app/app.go:61","msg":"Shutting down server...","pid":27683}
 {"level":"info","timestamp":"2025-11-12T21:37:03.719+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":27683}
+{"level":"info","timestamp":"2025-11-13T15:09:02.643+0300","caller":"db/connect_to_psql.go:24","msg":"connected to Postgres successfully","pid":95212}
+{"level":"info","timestamp":"2025-11-13T15:54:20.486+0300","caller":"app/app.go:67","msg":"Shutting down server...","pid":95212}
+{"level":"info","timestamp":"2025-11-13T15:54:20.486+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":95212}
+{"level":"info","timestamp":"2025-11-13T15:54:38.126+0300","caller":"db/connect_to_psql.go:24","msg":"connected to Postgres successfully","pid":134621}
+{"level":"info","timestamp":"2025-11-13T15:54:41.047+0300","caller":"app/app.go:72","msg":"Shutting down server...","pid":134621}
+{"level":"info","timestamp":"2025-11-13T15:54:41.047+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":134621}
+{"level":"info","timestamp":"2025-11-13T16:06:59.204+0300","caller":"db/connect_to_psql.go:24","msg":"connected to Postgres successfully","pid":145050}
+{"level":"info","timestamp":"2025-11-13T16:09:49.999+0300","caller":"app/app.go:72","msg":"Shutting down server...","pid":145050}
+{"level":"info","timestamp":"2025-11-13T16:09:49.999+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":145050}
+{"level":"info","timestamp":"2025-11-13T16:10:28.568+0300","caller":"db/connect_to_psql.go:24","msg":"connected to Postgres successfully","pid":148095}
+{"level":"info","timestamp":"2025-11-13T16:10:29.950+0300","caller":"app/app.go:74","msg":"Shutting down server...","pid":148095}
+{"level":"info","timestamp":"2025-11-13T16:10:29.950+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":148095}
+{"level":"info","timestamp":"2025-11-13T16:10:39.527+0300","caller":"db/connect_to_psql.go:24","msg":"connected to Postgres successfully","pid":148346}
+{"level":"info","timestamp":"2025-11-13T16:10:40.738+0300","caller":"app/app.go:74","msg":"Shutting down server...","pid":148346}
+{"level":"info","timestamp":"2025-11-13T16:10:40.739+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":148346}
+{"level":"info","timestamp":"2025-11-13T16:10:57.805+0300","caller":"db/connect_to_psql.go:24","msg":"connected to Postgres successfully","pid":148746}
+{"level":"info","timestamp":"2025-11-13T16:11:02.515+0300","caller":"app/app.go:74","msg":"Shutting down server...","pid":148746}
+{"level":"info","timestamp":"2025-11-13T16:11:02.515+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":148746}
+{"level":"info","timestamp":"2025-11-13T16:11:23.161+0300","caller":"db/connect_to_psql.go:24","msg":"connected to Postgres successfully","pid":149219}
+{"level":"info","timestamp":"2025-11-13T16:11:25.589+0300","caller":"app/app.go:72","msg":"\nShutting down server...","pid":149219}
+{"level":"info","timestamp":"2025-11-13T16:11:25.590+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":149219}
+{"level":"info","timestamp":"2025-11-13T16:12:03.113+0300","caller":"db/connect_to_psql.go:24","msg":"connected to Postgres successfully","pid":149865}
+{"level":"info","timestamp":"2025-11-13T16:12:04.279+0300","caller":"app/app.go:74","msg":"Shutting down server...","pid":149865}
+{"level":"info","timestamp":"2025-11-13T16:12:04.280+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":149865}
+{"level":"info","timestamp":"2025-11-13T16:12:40.770+0300","caller":"db/connect_to_psql.go:24","msg":"connected to Postgres successfully","pid":150441}
+{"level":"info","timestamp":"2025-11-13T16:12:42.584+0300","caller":"app/app.go:74","msg":"Shutting down server...","pid":150441}
+{"level":"info","timestamp":"2025-11-13T16:12:42.585+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":150441}
+{"level":"info","timestamp":"2025-11-13T16:12:57.141+0300","caller":"db/connect_to_psql.go:24","msg":"connected to Postgres successfully","pid":150751}
+{"level":"info","timestamp":"2025-11-13T16:12:58.271+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":150751}
+{"level":"info","timestamp":"2025-11-13T16:12:58.272+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":150751}
+{"level":"info","timestamp":"2025-11-13T16:57:33.132+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":187749}
+{"level":"info","timestamp":"2025-11-13T16:57:34.774+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":187749}
+{"level":"info","timestamp":"2025-11-13T16:57:34.774+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":187749}
+{"level":"info","timestamp":"2025-11-13T17:03:42.012+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":193430}
+{"level":"info","timestamp":"2025-11-13T17:03:44.228+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":193430}
+{"level":"info","timestamp":"2025-11-13T17:03:44.228+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":193430}
+{"level":"info","timestamp":"2025-11-13T17:28:39.633+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":214812}
+{"level":"info","timestamp":"2025-11-13T17:28:40.851+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":214812}
+{"level":"info","timestamp":"2025-11-13T17:28:40.852+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":214812}
+{"level":"info","timestamp":"2025-11-13T18:09:01.618+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":248323}
+{"level":"info","timestamp":"2025-11-13T18:09:02.546+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":248323}
+{"level":"info","timestamp":"2025-11-13T18:09:02.546+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":248323}
+{"level":"info","timestamp":"2025-11-13T18:12:26.877+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":251246}
+{"level":"info","timestamp":"2025-11-13T18:12:29.428+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":251246}
+{"level":"info","timestamp":"2025-11-13T18:12:29.428+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":251246}

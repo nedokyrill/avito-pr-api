@@ -6,5 +6,7 @@ import "github.com/nedokyrill/avito-pr-api/internal/generated"
 
 type User = generated.User
 
-type TeamMember = generated.TeamMember
-
+type SetIsActiveRequest struct {
+	UserID   string `json:"user_id" binding:"required"`
+	IsActive bool   `json:"is_active"`
+}

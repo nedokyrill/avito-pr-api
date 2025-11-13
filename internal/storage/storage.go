@@ -17,7 +17,6 @@ type UserRepositoryInterface interface {
 	CreateOrUpdateUser(ctx context.Context, user *domain.User, teamID uuid.UUID) error
 	GetUserByID(ctx context.Context, userID string) (*domain.User, error)
 	SetUserIsActive(ctx context.Context, userID string, isActive bool) error
-	GetActiveTeamMembers(ctx context.Context, teamID uuid.UUID, excludeUserID uuid.UUID) ([]*domain.User, error)
 }
 
 type PullRequestRepositoryInterface interface {
@@ -30,5 +29,5 @@ type PrReviewersRepositoryInterface interface {
 	RemoveReviewer(ctx context.Context, prID string, reviewerID string) error
 	AddReviewer(ctx context.Context, prID string, reviewerID string) error
 	GetAssignedReviewers(ctx context.Context, prID string) ([]string, error)
-	GetPRsByReviewer(ctx context.Context, userID string) ([]*domain.PullRequestShort, error)
+	GetPRsByReviewer(ctx context.Context, userID string) ([]domain.PullRequestShort, error)
 }

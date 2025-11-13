@@ -8,7 +8,7 @@ type ErrorResponseErrorCode = generated.ErrorResponseErrorCode
 
 type ErrorResponse = generated.ErrorResponse
 
-// Реэкспорт констант кодов ошибок
+// Реэкспорт констант кодов ошибок из OpenAPI
 const (
 	NoCandidate ErrorResponseErrorCode = generated.NOCANDIDATE
 	NotAssigned ErrorResponseErrorCode = generated.NOTASSIGNED
@@ -16,6 +16,21 @@ const (
 	PrExists    ErrorResponseErrorCode = generated.PREXISTS
 	PrMerged    ErrorResponseErrorCode = generated.PRMERGED
 	TeamExists  ErrorResponseErrorCode = generated.TEAMEXISTS
+)
+
+// Кастомные 400 и 500
+const (
+	InvalidRequest ErrorResponseErrorCode = "INVALID_REQUEST"
+	InternalError  ErrorResponseErrorCode = "INTERNAL_ERROR"
+)
+
+// Ошибки между репо и сервис слоями
+const (
+	InvalidUUIDErr string = "invalid uuid"
+	InvalidPRIDErr string = "invalid pull request id"
+
+	TeamNotExistsErr string = "team does not exist"
+	NoUsersInTeamErr string = "no users in team"
 )
 
 func NewErrorResponse(code ErrorResponseErrorCode, message string) ErrorResponse {

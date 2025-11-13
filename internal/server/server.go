@@ -5,10 +5,10 @@ import (
 	"errors"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nedokyrill/avito-pr-api/pkg/logger"
+	"github.com/nedokyrill/avito-pr-api/pkg/consts"
+	"github.com/nedokyrill/avito-pr-api/pkg/utils/logger"
 )
 
 type APIServer struct {
@@ -20,8 +20,8 @@ func NewAPIServer(router *gin.Engine) *APIServer {
 		httpServer: &http.Server{
 			Addr:         ":" + os.Getenv("API_PORT"),
 			Handler:      router.Handler(),
-			ReadTimeout:  5 * time.Second,
-			WriteTimeout: 10 * time.Second,
+			ReadTimeout:  consts.ReadTimeout,
+			WriteTimeout: consts.WriteTimeout,
 		},
 	}
 }

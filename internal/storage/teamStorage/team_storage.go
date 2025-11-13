@@ -8,11 +8,10 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
-	"github.com/nedokyrill/avito-pr-api/pkg/consts"
 )
 
-var ErrNoUsersInTeam = errors.New(consts.NoUsersInTeamErr)
-var ErrTeamNotExists = errors.New(consts.TeamNotExistsErr)
+var ErrNoUsersInTeam = errors.New(domain.NoUsersInTeamErr)
+var ErrTeamNotExists = errors.New(domain.TeamNotExistsErr)
 
 type TeamStorage struct {
 	db *pgxpool.Pool

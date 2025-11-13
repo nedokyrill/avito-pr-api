@@ -9,11 +9,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
-	"github.com/nedokyrill/avito-pr-api/pkg/consts"
 )
 
-var ErrInvalidUUID = errors.New(consts.InvalidUUIDErr)
-var ErrInvalidPRID = errors.New(consts.InvalidPRIDErr)
+var ErrInvalidUUID = errors.New(domain.InvalidUUIDErr)
+var ErrInvalidPRID = errors.New(domain.InvalidPRIDErr)
 
 type PullRequestStorage struct {
 	db *pgxpool.Pool
@@ -97,4 +96,3 @@ func (s *PullRequestStorage) MergePullRequest(ctx context.Context, prID string) 
 
 	return nil
 }
-

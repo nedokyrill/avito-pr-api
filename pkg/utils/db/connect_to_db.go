@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/nedokyrill/avito-pr-api/pkg/logger"
+	"github.com/nedokyrill/avito-pr-api/pkg/utils/logger"
 )
 
 func Connect(ctx context.Context) (*pgxpool.Pool, error) {

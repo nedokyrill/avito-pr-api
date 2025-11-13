@@ -8,11 +8,12 @@ services:
       dockerfile: ./build/Dockerfile
     container_name: avito-pr-api-backend
     command: ["sh", "-c", "go run /usr/src/app/cmd/main.go"]
+    env_file:
+      - .env
     depends_on:
       - postgres
     environment:
       API_PORT: "${API_PORT}"
-      DB_URL: "${DB_URL}"
     ports:
       - "${API_PORT}:${API_PORT}"
     networks:
@@ -51,6 +52,8 @@ services:
       - "-c"
       - "pg_stat_statements.track=all"
     container_name: avito-pr-api-postgres
+    env_file:
+      - .env
     environment:
       POSTGRES_USER: "${DB_USERNAME}"
       POSTGRES_PASSWORD: "${DB_PASSWORD}"
@@ -73,6 +76,8 @@ services:
   migrate:
     image: migrate/migrate
     container_name: avito-pr-api-migrate
+    env_file:
+      - .env
     volumes:
       - ./db/migrations:/migrations
     command: [ "-path", "./migrations", "-database",  "${DB_URL}", "up" ]

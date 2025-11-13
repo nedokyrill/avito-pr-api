@@ -9,11 +9,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
-	"github.com/nedokyrill/avito-pr-api/pkg/consts"
 )
 
-var ErrInvalidUUID = errors.New(consts.InvalidUUIDErr)
-var ErrInvalidPRID = errors.New(consts.InvalidPRIDErr)
+var ErrInvalidUUID = errors.New(domain.InvalidUUIDErr)
+var ErrInvalidPRID = errors.New(domain.InvalidPRIDErr)
 
 type PrReviewersStorage struct {
 	db *pgxpool.Pool
@@ -103,7 +102,7 @@ func (s *PrReviewersStorage) GetAssignedReviewers(ctx context.Context, prID stri
 	return reviewers, nil
 }
 
-func (s *PrReviewersStorage) GetPRsByReviewer(ctx context.Context, userID string) ([]*domain.PullRequestShort, error) {
+func (s *PrReviewersStorage) GetPRsByReviewer(ctx context.Context, userID string) ([]domain.PullRequestShort, error) {
 	userUUID, err := uuid.Parse(userID)
 	if err != nil {
 		return nil, ErrInvalidUUID
@@ -122,7 +121,7 @@ func (s *PrReviewersStorage) GetPRsByReviewer(ctx context.Context, userID string
 	}
 	defer rows.Close()
 
-	var prs []*domain.PullRequestShort
+	var prs []domain.PullRequestShort
 	for rows.Next() {
 		var id int
 		var name string
@@ -133,7 +132,7 @@ func (s *PrReviewersStorage) GetPRsByReviewer(ctx context.Context, userID string
 			return nil, err
 		}
 
-		prs = append(prs, &domain.PullRequestShort{
+		prs = append(prs, domain.PullRequestShort{
 			PullRequestId:   strconv.Itoa(id),
 			PullRequestName: name,
 			AuthorId:        authorUUID.String(),
@@ -147,4 +146,3 @@ func (s *PrReviewersStorage) GetPRsByReviewer(ctx context.Context, userID string
 
 	return prs, nil
 }
-
