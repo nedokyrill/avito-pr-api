@@ -1,5 +1,5 @@
 create table if not exists pr_reviewers (
-    pull_request_id integer not null references pull_requests(id) on delete cascade,
+    pull_request_id uuid not null references pull_requests(id) on delete cascade,
     reviewer_id uuid not null references users(id) on delete cascade,
     assigned_at timestamp default now(),
     primary key (pull_request_id, reviewer_id)

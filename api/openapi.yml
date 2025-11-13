@@ -99,6 +99,9 @@ components:
           items:
             type: string
           description: user_id назначенных ревьюверов (0..2)
+        need_more_reviewers:
+          type: boolean
+          description: Флаг, указывающий что не хватило кандидатов для назначения ревьюверов
         createdAt:
           type: string
           format: date-time

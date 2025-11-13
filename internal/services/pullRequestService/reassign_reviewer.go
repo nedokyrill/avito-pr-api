@@ -104,11 +104,15 @@ func (s *PullRequestServiceImpl) ReassignReviewer(c *gin.Context) {
 	}
 
 	if len(candidates) == 0 {
-		c.JSON(http.StatusConflict, domain.NewErrorResponse(
-			domain.NoCandidate,
-			"no active replacement candidate in team",
-		))
-		return
+		err = s.prRepo.SetNeedMoreReviewers(ctx, req.PullRequestID, true)
+		if err != nil {
+			logger.Logger.Error("error setting need_more_reviewers flag: ", err)
+			c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
+				domain.InternalError,
+				"error setting need_more_reviewers flag",
+			))
+			return
+		}
 	}
 
 	rng := rand.New(rand.NewSource(time.Now().UnixNano()))

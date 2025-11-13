@@ -54,3 +54,102 @@
 {"level":"info","timestamp":"2025-11-13T18:12:26.877+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":251246}
 {"level":"info","timestamp":"2025-11-13T18:12:29.428+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":251246}
 {"level":"info","timestamp":"2025-11-13T18:12:29.428+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":251246}
+{"level":"info","timestamp":"2025-11-13T20:30:13.929+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":295730}
+{"level":"info","timestamp":"2025-11-13T20:30:20.598+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":295730}
+{"level":"info","timestamp":"2025-11-13T20:30:20.598+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":295730}
+{"level":"info","timestamp":"2025-11-13T20:50:18.283+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":312418}
+{"level":"info","timestamp":"2025-11-13T20:50:19.296+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":312418}
+{"level":"info","timestamp":"2025-11-13T20:50:19.296+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":312418}
+{"level":"info","timestamp":"2025-11-13T21:07:06.295+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":326509}
+{"level":"info","timestamp":"2025-11-13T21:07:09.271+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":326509}
+{"level":"info","timestamp":"2025-11-13T21:07:09.271+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":326509}
+{"level":"info","timestamp":"2025-11-13T21:08:28.614+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":328001}
+{"level":"info","timestamp":"2025-11-13T21:16:47.242+0300","caller":"teamService/create_team.go:64","msg":"team created successfully","pid":328001,"team_name":"backend"}
+{"level":"info","timestamp":"2025-11-13T21:18:30.768+0300","caller":"teamService/get_team.go:42","msg":"team retrieved successfully","pid":328001,"team_name":"backend"}
+{"level":"info","timestamp":"2025-11-13T21:20:29.603+0300","caller":"teamService/get_team.go:42","msg":"team retrieved successfully","pid":328001,"team_name":"backend"}
+{"level":"info","timestamp":"2025-11-13T21:21:03.357+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":328001}
+{"level":"info","timestamp":"2025-11-13T21:21:03.357+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":328001}
+{"level":"info","timestamp":"2025-11-13T21:21:05.880+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":338684}
+{"level":"info","timestamp":"2025-11-13T21:21:09.175+0300","caller":"teamService/get_team.go:42","msg":"team retrieved successfully","pid":338684,"team_name":"backend"}
+{"level":"info","timestamp":"2025-11-13T21:22:53.462+0300","caller":"userService/set_is_active.go:60","msg":"user active status updated","pid":338684,"user_id":"550e8400-e29b-41d4-a716-446655440002","is_active":false}
+{"level":"info","timestamp":"2025-11-13T21:23:15.705+0300","caller":"userService/set_is_active.go:60","msg":"user active status updated","pid":338684,"user_id":"550e8400-e29b-41d4-a716-446655440002","is_active":true}
+{"level":"info","timestamp":"2025-11-13T21:23:20.932+0300","caller":"userService/set_is_active.go:60","msg":"user active status updated","pid":338684,"user_id":"550e8400-e29b-41d4-a716-446655440002","is_active":false}
+{"level":"info","timestamp":"2025-11-13T21:24:25.484+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":338684}
+{"level":"info","timestamp":"2025-11-13T21:24:25.485+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":338684}
+{"level":"info","timestamp":"2025-11-13T21:24:28.084+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":341594}
+{"level":"info","timestamp":"2025-11-13T21:24:34.568+0300","caller":"userService/set_is_active.go:60","msg":"user active status updated","pid":341594,"user_id":"550e8400-e29b-41d4-a716-446655440002","is_active":false}
+{"level":"error","timestamp":"2025-11-13T21:25:55.933+0300","caller":"userService/get_user_reviews.go:25","msg":"error getting user reviews: ERROR: relation \"pull_requests\" does not exist (SQLSTATE 42P01)","pid":341594}
+{"level":"error","timestamp":"2025-11-13T21:26:05.366+0300","caller":"userService/get_user_reviews.go:25","msg":"error getting user reviews: ERROR: relation \"pull_requests\" does not exist (SQLSTATE 42P01)","pid":341594}
+{"level":"info","timestamp":"2025-11-13T21:27:29.198+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":341594}
+{"level":"info","timestamp":"2025-11-13T21:27:29.198+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":341594}
+{"level":"info","timestamp":"2025-11-13T21:27:31.347+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":344273}
+{"level":"error","timestamp":"2025-11-13T21:27:33.827+0300","caller":"userService/get_user_reviews.go:35","msg":"error getting user reviews: ERROR: relation \"pull_requests\" does not exist (SQLSTATE 42P01)","pid":344273}
+{"level":"info","timestamp":"2025-11-13T21:29:31.312+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":344273}
+{"level":"info","timestamp":"2025-11-13T21:29:31.312+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":344273}
+{"level":"info","timestamp":"2025-11-13T21:29:43.961+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":346236}
+{"level":"info","timestamp":"2025-11-13T21:30:00.392+0300","caller":"userService/get_user_reviews.go:43","msg":"user reviews retrieved successfully","pid":346236,"user_id":"550e8400-e29b-41d4-a716-446655440004"}
+{"level":"info","timestamp":"2025-11-13T21:30:34.936+0300","caller":"teamService/get_team.go:42","msg":"team retrieved successfully","pid":346236,"team_name":"backend"}
+{"level":"info","timestamp":"2025-11-13T21:31:05.734+0300","caller":"userService/get_user_reviews.go:43","msg":"user reviews retrieved successfully","pid":346236,"user_id":"550e8400-e29b-41d4-a716-446655440004"}
+{"level":"error","timestamp":"2025-11-13T21:32:14.202+0300","caller":"userService/get_user_reviews.go:35","msg":"error getting user reviews: invalid uuid","pid":346236}
+{"level":"info","timestamp":"2025-11-13T21:32:24.306+0300","caller":"userService/get_user_reviews.go:43","msg":"user reviews retrieved successfully","pid":346236,"user_id":"550e8400-e29b-41d4-a716-446655440004"}
+{"level":"info","timestamp":"2025-11-13T21:32:29.476+0300","caller":"userService/get_user_reviews.go:43","msg":"user reviews retrieved successfully","pid":346236,"user_id":"550e8400-e29b-41d4-a716-446655440007"}
+{"level":"info","timestamp":"2025-11-13T21:32:36.873+0300","caller":"userService/get_user_reviews.go:43","msg":"user reviews retrieved successfully","pid":346236,"user_id":"550e8400-e29b-41d4-a716-446655440003"}
+{"level":"info","timestamp":"2025-11-13T21:36:06.445+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":346236}
+{"level":"info","timestamp":"2025-11-13T21:36:06.445+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":346236}
+{"level":"info","timestamp":"2025-11-13T21:36:08.045+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":351654}
+{"level":"info","timestamp":"2025-11-13T21:36:10.677+0300","caller":"userService/get_user_reviews.go:46","msg":"user reviews retrieved successfully","pid":351654,"user_id":"550e8400-e29b-41d4-a716-446655440003"}
+{"level":"info","timestamp":"2025-11-13T21:36:24.592+0300","caller":"userService/get_user_reviews.go:46","msg":"user reviews retrieved successfully","pid":351654,"user_id":"550e8400-e29b-41d4-a716-446655440003"}
+{"level":"info","timestamp":"2025-11-13T21:36:45.154+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":351654}
+{"level":"info","timestamp":"2025-11-13T21:36:45.154+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":351654}
+{"level":"info","timestamp":"2025-11-13T21:36:47.071+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":352352}
+{"level":"info","timestamp":"2025-11-13T21:36:49.270+0300","caller":"userService/get_user_reviews.go:46","msg":"user reviews retrieved successfully","pid":352352,"user_id":"550e8400-e29b-41d4-a716-446655440003"}
+{"level":"info","timestamp":"2025-11-13T21:37:01.525+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":352352}
+{"level":"info","timestamp":"2025-11-13T21:37:01.525+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":352352}
+{"level":"info","timestamp":"2025-11-13T21:37:55.195+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":353365}
+{"level":"info","timestamp":"2025-11-13T21:37:59.847+0300","caller":"pullRequestService/create_pull_request.go:123","msg":"PR created successfully","pid":353365,"pr_id":"1","reviewers_count":1}
+{"level":"info","timestamp":"2025-11-13T21:44:36.961+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":353365}
+{"level":"info","timestamp":"2025-11-13T21:44:36.961+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":353365}
+{"level":"info","timestamp":"2025-11-13T21:44:38.937+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":358973}
+{"level":"error","timestamp":"2025-11-13T21:44:40.417+0300","caller":"pullRequestService/create_pull_request.go:98","msg":"error adding reviewer: ERROR: duplicate key value violates unique constraint \"pr_reviewers_pkey\" (SQLSTATE 23505)","pid":358973}
+{"level":"error","timestamp":"2025-11-13T21:44:43.359+0300","caller":"pullRequestService/create_pull_request.go:98","msg":"error adding reviewer: ERROR: duplicate key value violates unique constraint \"pr_reviewers_pkey\" (SQLSTATE 23505)","pid":358973}
+{"level":"info","timestamp":"2025-11-13T21:45:30.016+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":358973}
+{"level":"info","timestamp":"2025-11-13T21:45:30.016+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":358973}
+{"level":"info","timestamp":"2025-11-13T22:37:03.472+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":401694}
+{"level":"info","timestamp":"2025-11-13T22:37:22.190+0300","caller":"teamService/get_team.go:42","msg":"team retrieved successfully","pid":401694,"team_name":"backend"}
+{"level":"info","timestamp":"2025-11-13T22:38:44.206+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":401694}
+{"level":"info","timestamp":"2025-11-13T22:38:44.207+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":401694}
+{"level":"info","timestamp":"2025-11-13T22:46:13.143+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":409794}
+{"level":"info","timestamp":"2025-11-13T22:46:31.089+0300","caller":"teamService/create_team.go:64","msg":"team created successfully","pid":409794,"team_name":"backend"}
+{"level":"info","timestamp":"2025-11-13T22:46:52.720+0300","caller":"teamService/get_team.go:42","msg":"team retrieved successfully","pid":409794,"team_name":"backend"}
+{"level":"info","timestamp":"2025-11-13T22:47:02.305+0300","caller":"userService/set_is_active.go:60","msg":"user active status updated","pid":409794,"user_id":"550e8400-e29b-41d4-a716-446655440002","is_active":false}
+{"level":"info","timestamp":"2025-11-13T22:47:20.156+0300","caller":"userService/get_user_reviews.go:46","msg":"user reviews retrieved successfully","pid":409794,"user_id":"550e8400-e29b-41d4-a716-446655440003"}
+{"level":"error","timestamp":"2025-11-13T22:47:36.962+0300","caller":"pullRequestService/create_pull_request.go:98","msg":"error adding reviewer: failed to encode args[0]: unable to encode 1 into binary format for uuid (OID 2950): cannot find encode plan","pid":409794}
+{"level":"info","timestamp":"2025-11-13T22:48:59.110+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":409794}
+{"level":"info","timestamp":"2025-11-13T22:48:59.110+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":409794}
+{"level":"info","timestamp":"2025-11-13T22:51:28.417+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":414273}
+{"level":"error","timestamp":"2025-11-13T22:51:31.068+0300","caller":"pullRequestService/create_pull_request.go:98","msg":"error adding reviewer: invalid uuid","pid":414273}
+{"level":"error","timestamp":"2025-11-13T22:55:26.542+0300","caller":"pullRequestService/create_pull_request.go:98","msg":"error adding reviewer: ERROR: insert or update on table \"pr_reviewers\" violates foreign key constraint \"pr_reviewers_pull_request_id_fkey\" (SQLSTATE 23503)","pid":414273}
+{"level":"info","timestamp":"2025-11-13T22:57:56.944+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":414273}
+{"level":"info","timestamp":"2025-11-13T22:57:56.945+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":414273}
+{"level":"info","timestamp":"2025-11-13T23:01:07.177+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":422341}
+{"level":"info","timestamp":"2025-11-13T23:01:11.177+0300","caller":"pullRequestService/create_pull_request.go:123","msg":"PR created successfully","pid":422341,"pr_id":"650e8400-e29b-41d4-a716-446655440001","reviewers_count":1}
+{"level":"info","timestamp":"2025-11-13T23:03:15.913+0300","caller":"pullRequestService/merge_pull_request.go:71","msg":"PR merged successfully","pid":422341,"pr_id":"650e8400-e29b-41d4-a716-446655440001"}
+{"level":"info","timestamp":"2025-11-13T23:03:20.673+0300","caller":"pullRequestService/merge_pull_request.go:71","msg":"PR merged successfully","pid":422341,"pr_id":"650e8400-e29b-41d4-a716-446655440001"}
+{"level":"info","timestamp":"2025-11-13T23:03:22.373+0300","caller":"pullRequestService/merge_pull_request.go:71","msg":"PR merged successfully","pid":422341,"pr_id":"650e8400-e29b-41d4-a716-446655440001"}
+{"level":"info","timestamp":"2025-11-13T23:03:24.314+0300","caller":"pullRequestService/merge_pull_request.go:71","msg":"PR merged successfully","pid":422341,"pr_id":"650e8400-e29b-41d4-a716-446655440001"}
+{"level":"info","timestamp":"2025-11-13T23:03:27.150+0300","caller":"pullRequestService/merge_pull_request.go:71","msg":"PR merged successfully","pid":422341,"pr_id":"650e8400-e29b-41d4-a716-446655440001"}
+{"level":"info","timestamp":"2025-11-13T23:03:28.173+0300","caller":"pullRequestService/merge_pull_request.go:71","msg":"PR merged successfully","pid":422341,"pr_id":"650e8400-e29b-41d4-a716-446655440001"}
+{"level":"info","timestamp":"2025-11-13T23:05:24.370+0300","caller":"teamService/create_team.go:64","msg":"team created successfully","pid":422341,"team_name":"backend"}
+{"level":"info","timestamp":"2025-11-13T23:05:35.400+0300","caller":"teamService/create_team.go:64","msg":"team created successfully","pid":422341,"team_name":"frontend"}
+{"level":"info","timestamp":"2025-11-13T23:05:56.001+0300","caller":"teamService/get_team.go:42","msg":"team retrieved successfully","pid":422341,"team_name":"backend"}
+{"level":"info","timestamp":"2025-11-13T23:06:04.566+0300","caller":"teamService/get_team.go:42","msg":"team retrieved successfully","pid":422341,"team_name":"frontend"}
+{"level":"info","timestamp":"2025-11-13T23:06:38.053+0300","caller":"pullRequestService/create_pull_request.go:123","msg":"PR created successfully","pid":422341,"pr_id":"650e8400-e29b-41d4-a716-446655440001","reviewers_count":2}
+{"level":"info","timestamp":"2025-11-13T23:07:15.280+0300","caller":"userService/get_user_reviews.go:46","msg":"user reviews retrieved successfully","pid":422341,"user_id":"550e8400-e29b-41d4-a716-446655440002"}
+{"level":"info","timestamp":"2025-11-13T23:07:21.560+0300","caller":"userService/get_user_reviews.go:46","msg":"user reviews retrieved successfully","pid":422341,"user_id":"550e8400-e29b-41d4-a716-446655440003"}
+{"level":"info","timestamp":"2025-11-13T23:07:53.901+0300","caller":"userService/set_is_active.go:60","msg":"user active status updated","pid":422341,"user_id":"550e8400-e29b-41d4-a716-446655440003","is_active":false}
+{"level":"info","timestamp":"2025-11-13T23:08:55.774+0300","caller":"teamService/get_team.go:42","msg":"team retrieved successfully","pid":422341,"team_name":"backend"}
+{"level":"info","timestamp":"2025-11-13T23:09:11.854+0300","caller":"userService/get_user_reviews.go:46","msg":"user reviews retrieved successfully","pid":422341,"user_id":"550e8400-e29b-41d4-a716-446655440003"}
+{"level":"info","timestamp":"2025-11-13T23:09:19.866+0300","caller":"teamService/get_team.go:42","msg":"team retrieved successfully","pid":422341,"team_name":"backend"}
+{"level":"info","timestamp":"2025-11-13T23:09:50.993+0300","caller":"pullRequestService/reassign_reviewer.go:153","msg":"reviewer reassigned successfully","pid":422341,"pr_id":"650e8400-e29b-41d4-a716-446655440001","old_user_id":"550e8400-e29b-41d4-a716-446655440003","new_user_id":"550e8400-e29b-41d4-a716-446655440002"}
+{"level":"info","timestamp":"2025-11-13T23:13:56.727+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":422341}
+{"level":"info","timestamp":"2025-11-13T23:13:56.728+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":422341}

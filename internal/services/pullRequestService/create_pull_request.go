@@ -106,7 +106,21 @@ func (s *PullRequestServiceImpl) CreatePullRequest(c *gin.Context) {
 
 	pr.AssignedReviewers = reviewers
 
-	logger.Logger.Infow("PR created successfully", "pr_id", req.PullRequestID)
+	needMore := len(reviewers) < domain.MaxReviewersCount
+	pr.NeedMoreReviewers = &needMore
+	if needMore {
+		err = s.prRepo.SetNeedMoreReviewers(ctx, req.PullRequestID, true)
+		if err != nil {
+			logger.Logger.Error("error setting need_more_reviewers flag: ", err)
+			c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
+				domain.InternalError,
+				"error setting need_more_reviewers flag",
+			))
+			return
+		}
+	}
+
+	logger.Logger.Infow("PR created successfully", "pr_id", req.PullRequestID, "reviewers_count", len(reviewers))
 	c.JSON(http.StatusCreated, gin.H{
 		"pr": pr,
 	})

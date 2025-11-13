@@ -47,14 +47,14 @@ type ErrorResponseErrorCode string
 
 // PullRequest defines model for PullRequest.
 type PullRequest struct {
-	// AssignedReviewers user_id назначенных ревьюверов (0..2)
-	AssignedReviewers []string          `json:"assigned_reviewers"`
-	AuthorId          string            `json:"author_id"`
-	CreatedAt         *time.Time        `json:"createdAt"`
-	MergedAt          *time.Time        `json:"mergedAt"`
 	PullRequestId     string            `json:"pull_request_id"`
 	PullRequestName   string            `json:"pull_request_name"`
+	AuthorId          string            `json:"author_id"`
 	Status            PullRequestStatus `json:"status"`
+	AssignedReviewers []string          `json:"assigned_reviewers"`
+	NeedMoreReviewers *bool             `json:"need_more_reviewers,omitempty"`
+	CreatedAt         *time.Time        `json:"createdAt"`
+	MergedAt          *time.Time        `json:"mergedAt"`
 }
 
 // PullRequestStatus defines model for PullRequest.Status.
@@ -73,8 +73,8 @@ type PullRequestShortStatus string
 
 // Team defines model for Team.
 type Team struct {
-	Members  []TeamMember `json:"members"`
 	TeamName string       `json:"team_name"`
+	Members  []TeamMember `json:"members"`
 }
 
 // TeamMember defines model for TeamMember.
@@ -86,10 +86,10 @@ type TeamMember struct {
 
 // User defines model for User.
 type User struct {
-	IsActive bool   `json:"is_active"`
-	TeamName string `json:"team_name"`
 	UserId   string `json:"user_id"`
 	Username string `json:"username"`
+	TeamName string `json:"team_name"`
+	IsActive bool   `json:"is_active"`
 }
 
 // TeamNameQuery defines model for TeamNameQuery.

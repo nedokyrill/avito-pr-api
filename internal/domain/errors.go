@@ -27,7 +27,6 @@ const (
 // Ошибки между репо и сервис слоями
 const (
 	InvalidUUIDErr string = "invalid uuid"
-	InvalidPRIDErr string = "invalid pull request id"
 
 	TeamNotExistsErr string = "team does not exist"
 	NoUsersInTeamErr string = "no users in team"

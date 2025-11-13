@@ -5,7 +5,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: ./build/Dockerfile
+      dockerfile: ./build/app/Dockerfile
     container_name: avito-pr-api-backend
     command: ["sh", "-c", "go run /usr/src/app/cmd/main.go"]
     env_file:

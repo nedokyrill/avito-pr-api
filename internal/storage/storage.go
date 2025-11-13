@@ -23,6 +23,7 @@ type PullRequestRepositoryInterface interface {
 	CreatePullRequest(ctx context.Context, pr *domain.PullRequest) error
 	GetPullRequestByID(ctx context.Context, prID string) (*domain.PullRequest, error)
 	MergePullRequest(ctx context.Context, prID string) error
+	SetNeedMoreReviewers(ctx context.Context, prID string, needMore bool) error
 }
 
 type PrReviewersRepositoryInterface interface {

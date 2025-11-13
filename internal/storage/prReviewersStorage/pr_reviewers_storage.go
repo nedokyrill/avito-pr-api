@@ -3,7 +3,6 @@ package prReviewersStorage
 import (
 	"context"
 	"errors"
-	"strconv"
 	"time"
 
 	"github.com/google/uuid"
@@ -12,7 +11,6 @@ import (
 )
 
 var ErrInvalidUUID = errors.New(domain.InvalidUUIDErr)
-var ErrInvalidPRID = errors.New(domain.InvalidPRIDErr)
 
 type PrReviewersStorage struct {
 	db *pgxpool.Pool
@@ -25,9 +23,9 @@ func NewPrReviewersStorage(db *pgxpool.Pool) *PrReviewersStorage {
 }
 
 func (s *PrReviewersStorage) RemoveReviewer(ctx context.Context, prID string, reviewerID string) error {
-	prIDInt, err := strconv.Atoi(prID)
+	prUUID, err := uuid.Parse(prID)
 	if err != nil {
-		return ErrInvalidPRID
+		return ErrInvalidUUID
 	}
 
 	reviewerUUID, err := uuid.Parse(reviewerID)
@@ -37,7 +35,7 @@ func (s *PrReviewersStorage) RemoveReviewer(ctx context.Context, prID string, re
 
 	query := `DELETE FROM pr_reviewers WHERE pull_request_id = $1 AND reviewer_id = $2`
 
-	_, err = s.db.Exec(ctx, query, prIDInt, reviewerUUID)
+	_, err = s.db.Exec(ctx, query, prUUID, reviewerUUID)
 	if err != nil {
 		return err
 	}
@@ -46,9 +44,9 @@ func (s *PrReviewersStorage) RemoveReviewer(ctx context.Context, prID string, re
 }
 
 func (s *PrReviewersStorage) AddReviewer(ctx context.Context, prID string, reviewerID string) error {
-	prIDInt, err := strconv.Atoi(prID)
+	prUUID, err := uuid.Parse(prID)
 	if err != nil {
-		return ErrInvalidPRID
+		return ErrInvalidUUID
 	}
 
 	reviewerUUID, err := uuid.Parse(reviewerID)
@@ -60,7 +58,7 @@ func (s *PrReviewersStorage) AddReviewer(ctx context.Context, prID string, revie
 		INSERT INTO pr_reviewers (pull_request_id, reviewer_id, assigned_at)
 		VALUES ($1, $2, $3)`
 
-	_, err = s.db.Exec(ctx, query, prIDInt, reviewerUUID, time.Now())
+	_, err = s.db.Exec(ctx, query, prUUID, reviewerUUID, time.Now())
 	if err != nil {
 		return err
 	}
@@ -69,9 +67,9 @@ func (s *PrReviewersStorage) AddReviewer(ctx context.Context, prID string, revie
 }
 
 func (s *PrReviewersStorage) GetAssignedReviewers(ctx context.Context, prID string) ([]string, error) {
-	prIDInt, err := strconv.Atoi(prID)
+	prUUID, err := uuid.Parse(prID)
 	if err != nil {
-		return nil, ErrInvalidPRID
+		return nil, ErrInvalidUUID
 	}
 
 	query := `
@@ -80,7 +78,7 @@ func (s *PrReviewersStorage) GetAssignedReviewers(ctx context.Context, prID stri
 		WHERE pull_request_id = $1
 		ORDER BY assigned_at`
 
-	rows, err := s.db.Query(ctx, query, prIDInt)
+	rows, err := s.db.Query(ctx, query, prUUID)
 	if err != nil {
 		return nil, err
 	}
@@ -123,17 +121,17 @@ func (s *PrReviewersStorage) GetPRsByReviewer(ctx context.Context, userID string
 
 	var prs []domain.PullRequestShort
 	for rows.Next() {
-		var id int
+		var prUUID uuid.UUID
 		var name string
 		var authorUUID uuid.UUID
 		var status string
 
-		if err = rows.Scan(&id, &name, &authorUUID, &status); err != nil {
+		if err = rows.Scan(&prUUID, &name, &authorUUID, &status); err != nil {
 			return nil, err
 		}
 
 		prs = append(prs, domain.PullRequestShort{
-			PullRequestId:   strconv.Itoa(id),
+			PullRequestId:   prUUID.String(),
 			PullRequestName: name,
 			AuthorId:        authorUUID.String(),
 			Status:          domain.PullRequestStatus(status),

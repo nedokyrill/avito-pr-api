@@ -3,7 +3,6 @@ package pullRequestStorage
 import (
 	"context"
 	"errors"
-	"strconv"
 	"time"
 
 	"github.com/google/uuid"
@@ -12,7 +11,6 @@ import (
 )
 
 var ErrInvalidUUID = errors.New(domain.InvalidUUIDErr)
-var ErrInvalidPRID = errors.New(domain.InvalidPRIDErr)
 
 type PullRequestStorage struct {
 	db *pgxpool.Pool
@@ -25,14 +23,19 @@ func NewPullRequestStorage(db *pgxpool.Pool) *PullRequestStorage {
 }
 
 func (s *PullRequestStorage) CreatePullRequest(ctx context.Context, pr *domain.PullRequest) error {
+	prUUID, err := uuid.Parse(pr.PullRequestId)
+	if err != nil {
+		return ErrInvalidUUID
+	}
+
 	authorUUID, err := uuid.Parse(pr.AuthorId)
 	if err != nil {
 		return ErrInvalidUUID
 	}
 
-	query := `INSERT INTO pull_requests (name, author_id, status) VALUES ($1, $2, $3)`
+	query := `INSERT INTO pull_requests (id, name, author_id, status) VALUES ($1, $2, $3, $4)`
 
-	_, err = s.db.Exec(ctx, query, pr.PullRequestName, authorUUID, string(pr.Status))
+	_, err = s.db.Exec(ctx, query, prUUID, pr.PullRequestName, authorUUID, string(pr.Status))
 	if err != nil {
 		return err
 	}
@@ -41,12 +44,11 @@ func (s *PullRequestStorage) CreatePullRequest(ctx context.Context, pr *domain.P
 }
 
 func (s *PullRequestStorage) GetPullRequestByID(ctx context.Context, prID string) (*domain.PullRequest, error) {
-	prIDInt, err := strconv.Atoi(prID)
+	prUUID, err := uuid.Parse(prID)
 	if err != nil {
-		return nil, ErrInvalidPRID
+		return nil, ErrInvalidUUID
 	}
 
-	var id int
 	var name string
 	var authorUUID uuid.UUID
 	var status string
@@ -54,11 +56,11 @@ func (s *PullRequestStorage) GetPullRequestByID(ctx context.Context, prID string
 	var mergedAt *time.Time
 
 	query := `
-		SELECT id, name, author_id, status, created_at, merged_at
+		SELECT name, author_id, status, created_at, merged_at
 		FROM pull_requests
 		WHERE id = $1`
 
-	err = s.db.QueryRow(ctx, query, prIDInt).Scan(&id, &name, &authorUUID, &status, &createdAt, &mergedAt)
+	err = s.db.QueryRow(ctx, query, prUUID).Scan(&name, &authorUUID, &status, &createdAt, &mergedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -77,9 +79,9 @@ func (s *PullRequestStorage) GetPullRequestByID(ctx context.Context, prID string
 }
 
 func (s *PullRequestStorage) MergePullRequest(ctx context.Context, prID string) error {
-	prIDInt, err := strconv.Atoi(prID)
+	prUUID, err := uuid.Parse(prID)
 	if err != nil {
-		return ErrInvalidPRID
+		return ErrInvalidUUID
 	}
 
 	mergedAt := time.Now()
@@ -89,10 +91,26 @@ func (s *PullRequestStorage) MergePullRequest(ctx context.Context, prID string) 
 		SET status = $1, merged_at = $2
 		WHERE id = $3 AND status != $1`
 
-	_, err = s.db.Exec(ctx, query, string(domain.PullRequestStatusMERGED), mergedAt, prIDInt)
+	_, err = s.db.Exec(ctx, query, string(domain.PullRequestStatusMERGED), mergedAt, prUUID)
 	if err != nil {
 		return err
 	}
 
 	return nil
 }
+func (s *PullRequestStorage) SetNeedMoreReviewers(ctx context.Context, prID string, needMore bool) error {
+	prUUID, err := uuid.Parse(prID)
+	if err != nil {
+		return ErrInvalidUUID
+	}
+
+	query := `UPDATE pull_requests SET need_more_reviewers = $1 WHERE id = $2`
+
+	_, err = s.db.Exec(ctx, query, needMore, prUUID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
