@@ -62,10 +62,10 @@ type PullRequestStatus string
 
 // PullRequestShort defines model for PullRequestShort.
 type PullRequestShort struct {
-	AuthorId        string                 `json:"author_id"`
-	PullRequestId   string                 `json:"pull_request_id"`
-	PullRequestName string                 `json:"pull_request_name"`
-	Status          PullRequestShortStatus `json:"status"`
+	AuthorId        string            `json:"author_id"`
+	PullRequestId   string            `json:"pull_request_id"`
+	PullRequestName string            `json:"pull_request_name"`
+	Status          PullRequestStatus `json:"status"`
 }
 
 // PullRequestShortStatus defines model for PullRequestShort.Status.
