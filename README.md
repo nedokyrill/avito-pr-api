@@ -25,6 +25,43 @@ avito-pr-api
 с ошибкой, а просто ставим флаг что пру нужны ревьюеры
 - для пр сделал уникальный идентификатор, так как если они будут повторяться будет путаница (например при MergePR 
 закроются все пр со статусом опен и таким айди). в некоторых ручках передается только айди, поэтому будет непонятно
+- PRLifecycleDurationHours отслеживает время жизни PR от создания до мерджа в часах
 
-  
-осталось: тесты (юнит и интеграционный), нагрузочное тестирование, прометеус, деактивация, хорошая ридмишка
+
+# осталось: 
+- тесты (юнит и интеграционный),
+- нагрузочное тестирование, 
+- деактивация,
+- хорошая ридмишка
+
+
+# можно добавить для прометея
+
+### 3. Полезные PromQL запросы
+
+**Среднее время жизни PR (за последние 5 минут):**
+```promql
+rate(pr_lifecycle_duration_hours_sum[5m]) / rate(pr_lifecycle_duration_hours_count[5m])
+```
+
+**Медианное время (p50):**
+```promql
+histogram_quantile(0.5, rate(pr_lifecycle_duration_hours_bucket[5m]))
+```
+
+**95-й перцентиль (p95):**
+```promql
+histogram_quantile(0.95, rate(pr_lifecycle_duration_hours_bucket[5m]))
+```
+
+**Количество PR, закрытых за последний час:**
+```promql
+increase(pr_lifecycle_duration_hours_count[1h])
+```
+
+**Процент PR, закрытых быстрее 24 часов:**
+```promql
+sum(rate(pr_lifecycle_duration_hours_bucket{le="24"}[5m])) 
+/ 
+sum(rate(pr_lifecycle_duration_hours_count[5m])) * 100
+```

@@ -153,3 +153,5 @@
 {"level":"info","timestamp":"2025-11-13T23:09:50.993+0300","caller":"pullRequestService/reassign_reviewer.go:153","msg":"reviewer reassigned successfully","pid":422341,"pr_id":"650e8400-e29b-41d4-a716-446655440001","old_user_id":"550e8400-e29b-41d4-a716-446655440003","new_user_id":"550e8400-e29b-41d4-a716-446655440002"}
 {"level":"info","timestamp":"2025-11-13T23:13:56.727+0300","caller":"app/app.go:74","msg":"shutting down server...","pid":422341}
 {"level":"info","timestamp":"2025-11-13T23:13:56.728+0300","caller":"server/server.go:45","msg":"shutdown completed before timeout.","pid":422341}
+{"level":"error","timestamp":"2025-11-14T15:04:20.431+0300","caller":"db/connect_to_db.go:20","msg":"unable to ping database: failed to connect to `user=postgres database=postgres`: hostname resolving error: lookup avito-pr-api-postgres: no such host\n","pid":57823}
+{"level":"fatal","timestamp":"2025-11-14T15:04:20.431+0300","caller":"app/app.go:46","msg":"error connecting to database, exiting...","pid":57823}

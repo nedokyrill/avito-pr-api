@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/nedokyrill/avito-pr-api/internal/api"
 	"github.com/nedokyrill/avito-pr-api/internal/server"
@@ -18,9 +19,12 @@ import (
 	"github.com/nedokyrill/avito-pr-api/internal/storage/teamStorage"
 	"github.com/nedokyrill/avito-pr-api/internal/storage/userStorage"
 	"github.com/nedokyrill/avito-pr-api/pkg/consts"
+	"github.com/nedokyrill/avito-pr-api/pkg/metrics"
 	"github.com/nedokyrill/avito-pr-api/pkg/utils/db"
 	"github.com/nedokyrill/avito-pr-api/pkg/utils/ginRouter"
 	"github.com/nedokyrill/avito-pr-api/pkg/utils/logger"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func Run() {
@@ -56,6 +60,10 @@ func Run() {
 
 	// Init ROUTER
 	router := ginRouter.InitRouter()
+
+	// Register METRICS
+	prometheus.MustRegister(metrics.PRLifecycleDurationHours)
+	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
 	// Init API routes
 	api.InitRoutes(router, teamSvc, userSvc, prSvc)

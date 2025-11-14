@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
+ 	"github.com/nedokyrill/avito-pr-api/pkg/metrics"
 	"github.com/nedokyrill/avito-pr-api/pkg/utils/logger"
 )
 
@@ -55,6 +56,17 @@ func (s *PullRequestServiceImpl) MergePullRequest(c *gin.Context) {
 		now := time.Now()
 		pr.MergedAt = &now
 		pr.Status = domain.PullRequestStatusMERGED
+
+		// Записываем метрику времени жизни PR (от создания до мерджа)
+		if pr.CreatedAt != nil {
+			lifecycleDuration := now.Sub(*pr.CreatedAt)
+			lifecycleHours := lifecycleDuration.Hours()
+			metrics.PRLifecycleDurationHours.Observe(lifecycleHours)
+			logger.Logger.Infow("PR lifecycle metric recorded",
+				"pr_id", req.PullRequestID,
+				"lifecycle_hours", lifecycleHours,
+			)
+		}
 	}
 
 	reviewers, err := s.prReviewersRepo.GetAssignedReviewers(ctx, req.PullRequestID)
