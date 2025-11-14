@@ -38,7 +38,7 @@ func (s *UserServiceImpl) GetUserReviews(c *gin.Context) {
 		logger.Logger.Error("error getting user reviews: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error getting user reviews",
+			domain.ErrGetUserReviewsMsg,
 		))
 		return
 	}

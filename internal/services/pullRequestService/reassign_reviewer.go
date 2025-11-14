@@ -38,7 +38,7 @@ func (s *PullRequestServiceImpl) ReassignReviewer(c *gin.Context) {
 		logger.Logger.Error("error getting PR: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error getting pull request",
+			domain.ErrReassignReviewerMsg,
 		))
 		return
 	}
@@ -56,7 +56,7 @@ func (s *PullRequestServiceImpl) ReassignReviewer(c *gin.Context) {
 		logger.Logger.Error("error getting assigned reviewers: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error getting assigned reviewers",
+			domain.ErrReassignReviewerMsg,
 		))
 		return
 	}
@@ -81,7 +81,7 @@ func (s *PullRequestServiceImpl) ReassignReviewer(c *gin.Context) {
 		logger.Logger.Error("error getting user: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error getting user",
+			domain.ErrReassignReviewerMsg,
 		))
 		return
 	}
@@ -91,7 +91,7 @@ func (s *PullRequestServiceImpl) ReassignReviewer(c *gin.Context) {
 		logger.Logger.Error("error getting team: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error getting team",
+			domain.ErrReassignReviewerMsg,
 		))
 		return
 	}
@@ -109,7 +109,7 @@ func (s *PullRequestServiceImpl) ReassignReviewer(c *gin.Context) {
 			logger.Logger.Error("error setting need_more_reviewers flag: ", err)
 			c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 				domain.InternalError,
-				"error setting need_more_reviewers flag",
+				domain.ErrReassignReviewerMsg,
 			))
 			return
 		}
@@ -119,22 +119,12 @@ func (s *PullRequestServiceImpl) ReassignReviewer(c *gin.Context) {
 	rng := rand.New(rand.NewSource(time.Now().UnixNano()))
 	newReviewerID := candidates[rng.Intn(len(candidates))]
 
-	err = s.prReviewersRepo.RemoveReviewer(ctx, req.PullRequestID, req.OldUserID)
+	err = s.prReviewersRepo.ReassignReviewerAtomic(ctx, req.PullRequestID, req.OldUserID, newReviewerID)
 	if err != nil {
-		logger.Logger.Error("error removing reviewer: ", err)
+		logger.Logger.Error("error reassigning reviewer: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error removing reviewer",
-		))
-		return
-	}
-
-	err = s.prReviewersRepo.AddReviewer(ctx, req.PullRequestID, newReviewerID)
-	if err != nil {
-		logger.Logger.Error("error adding reviewer: ", err)
-		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
-			domain.InternalError,
-			"error adding reviewer",
+			domain.ErrReassignReviewerMsg,
 		))
 		return
 	}
@@ -144,7 +134,7 @@ func (s *PullRequestServiceImpl) ReassignReviewer(c *gin.Context) {
 		logger.Logger.Error("error getting updated reviewers: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error getting updated reviewers",
+			domain.ErrReassignReviewerMsg,
 		))
 		return
 	}

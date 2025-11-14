@@ -1,3 +1,4 @@
+.PHONY: generate-api clean-api build-app run new-migrate migrate-up migrate-down docker-up docker-down tests lint
 -include .env
 
 # ГЕНЕРАЦИЯ КОДА ИЗ api/openapi.yml
@@ -39,6 +40,12 @@ docker-down:
 
 tests:
 	@go test -cover ./...
+
+integration-tests:
+	@docker compose down
+	@docker compose up -d postgres migrate
+	@go test -tags=integration -v ./integration_tests/...
+	@docker compose down
 
 # ЛИНТИНГ
 

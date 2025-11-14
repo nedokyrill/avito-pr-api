@@ -66,7 +66,12 @@ func Run() {
 	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
 	// Init API routes
-	api.InitRoutes(router, teamSvc, userSvc, prSvc)
+	api.InitRoutes(
+		router,
+		teamSvc,
+		userSvc,
+		prSvc,
+	)
 
 	// Init SERVER
 	srv := server.NewAPIServer(router)

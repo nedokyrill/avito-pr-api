@@ -8,6 +8,10 @@ import (
 )
 
 func RandSelectReviewers(members []domain.TeamMember, authorID string, maxCount int) []string {
+	if maxCount <= 0 {
+		return []string{}
+	}
+
 	var candidates []string
 	for _, member := range members {
 		if member.IsActive && member.UserId != authorID {

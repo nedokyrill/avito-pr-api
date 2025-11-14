@@ -34,7 +34,7 @@ func (s *TeamServiceImpl) GetTeam(c *gin.Context) {
 		logger.Logger.Error("error getting team: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error getting team",
+			domain.ErrGetTeamMsg,
 		))
 		return
 	}

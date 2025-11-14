@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
- 	"github.com/nedokyrill/avito-pr-api/pkg/metrics"
+	"github.com/nedokyrill/avito-pr-api/pkg/metrics"
 	"github.com/nedokyrill/avito-pr-api/pkg/utils/logger"
 )
 
@@ -37,7 +37,7 @@ func (s *PullRequestServiceImpl) MergePullRequest(c *gin.Context) {
 		logger.Logger.Error("error getting PR: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error getting pull request",
+			domain.ErrMergePRMsg,
 		))
 		return
 	}
@@ -48,7 +48,7 @@ func (s *PullRequestServiceImpl) MergePullRequest(c *gin.Context) {
 			logger.Logger.Error("error merging PR: ", err)
 			c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 				domain.InternalError,
-				"error merging pull request",
+				domain.ErrMergePRMsg,
 			))
 			return
 		}
@@ -74,7 +74,7 @@ func (s *PullRequestServiceImpl) MergePullRequest(c *gin.Context) {
 		logger.Logger.Error("error getting reviewers: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error getting reviewers",
+			domain.ErrMergePRMsg,
 		))
 		return
 	}

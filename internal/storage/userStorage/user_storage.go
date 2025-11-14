@@ -5,42 +5,20 @@ import (
 	"errors"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
+	"github.com/nedokyrill/avito-pr-api/pkg/utils/db"
 )
 
 var ErrInvalidUUID = errors.New(domain.InvalidUUIDErr)
 
 type UserStorage struct {
-	db *pgxpool.Pool
+	db db.Querier
 }
 
-func NewUserStorage(db *pgxpool.Pool) *UserStorage {
+func NewUserStorage(db db.Querier) *UserStorage {
 	return &UserStorage{
 		db: db,
 	}
-}
-
-func (s *UserStorage) CreateOrUpdateUser(ctx context.Context, user *domain.User, teamID uuid.UUID) error {
-	userUUID, err := uuid.Parse(user.UserId)
-	if err != nil {
-		return ErrInvalidUUID
-	}
-
-	query := `
-		INSERT INTO users (id, name, team_id, is_active)
-		VALUES ($1, $2, $3, $4)
-		ON CONFLICT (id) DO UPDATE 
-		SET name = EXCLUDED.name,
-		    team_id = EXCLUDED.team_id,
-		    is_active = EXCLUDED.is_active`
-
-	_, err = s.db.Exec(ctx, query, userUUID, user.Username, teamID, user.IsActive)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func (s *UserStorage) GetUserByID(ctx context.Context, userID string) (*domain.User, error) {

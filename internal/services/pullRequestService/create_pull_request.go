@@ -39,7 +39,7 @@ func (s *PullRequestServiceImpl) CreatePullRequest(c *gin.Context) {
 		logger.Logger.Error("error getting author: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error getting author",
+			domain.ErrCreatePRMsg,
 		))
 		return
 	}
@@ -56,7 +56,7 @@ func (s *PullRequestServiceImpl) CreatePullRequest(c *gin.Context) {
 		logger.Logger.Error("error getting team: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error getting team",
+			domain.ErrCreatePRMsg,
 		))
 		return
 	}
@@ -72,7 +72,10 @@ func (s *PullRequestServiceImpl) CreatePullRequest(c *gin.Context) {
 		MergedAt:          nil,
 	}
 
-	err = s.prRepo.CreatePullRequest(ctx, pr)
+	reviewers := utils.RandSelectReviewers(team.Members, req.AuthorID, domain.MaxReviewersCount)
+	needMore := len(reviewers) < domain.MaxReviewersCount
+
+	err = s.prRepo.CreatePullRequestWithReviewers(ctx, pr, reviewers, needMore)
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
@@ -82,43 +85,16 @@ func (s *PullRequestServiceImpl) CreatePullRequest(c *gin.Context) {
 			))
 			return
 		}
-		logger.Logger.Error("error creating PR: ", err)
+		logger.Logger.Error("error creating PR with reviewers: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error creating pull request",
+			domain.ErrCreatePRMsg,
 		))
 		return
 	}
 
-	reviewers := utils.RandSelectReviewers(team.Members, req.AuthorID, domain.MaxReviewersCount)
-
-	for _, reviewerID := range reviewers {
-		err = s.prReviewersRepo.AddReviewer(ctx, req.PullRequestID, reviewerID)
-		if err != nil {
-			logger.Logger.Error("error adding reviewer: ", err)
-			c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
-				domain.InternalError,
-				"error adding reviewer",
-			))
-			return
-		}
-	}
-
 	pr.AssignedReviewers = reviewers
-
-	needMore := len(reviewers) < domain.MaxReviewersCount
 	pr.NeedMoreReviewers = &needMore
-	if needMore {
-		err = s.prRepo.SetNeedMoreReviewers(ctx, req.PullRequestID, true)
-		if err != nil {
-			logger.Logger.Error("error setting need_more_reviewers flag: ", err)
-			c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
-				domain.InternalError,
-				"error setting need_more_reviewers flag",
-			))
-			return
-		}
-	}
 
 	logger.Logger.Infow("PR created successfully", "pr_id", req.PullRequestID, "reviewers_count", len(reviewers))
 	c.JSON(http.StatusCreated, gin.H{

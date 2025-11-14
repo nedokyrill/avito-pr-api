@@ -6,64 +6,20 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
+	"github.com/nedokyrill/avito-pr-api/pkg/utils/db"
 )
 
 var ErrInvalidUUID = errors.New(domain.InvalidUUIDErr)
 
 type PrReviewersStorage struct {
-	db *pgxpool.Pool
+	db db.Querier
 }
 
-func NewPrReviewersStorage(db *pgxpool.Pool) *PrReviewersStorage {
+func NewPrReviewersStorage(db db.Querier) *PrReviewersStorage {
 	return &PrReviewersStorage{
 		db: db,
 	}
-}
-
-func (s *PrReviewersStorage) RemoveReviewer(ctx context.Context, prID string, reviewerID string) error {
-	prUUID, err := uuid.Parse(prID)
-	if err != nil {
-		return ErrInvalidUUID
-	}
-
-	reviewerUUID, err := uuid.Parse(reviewerID)
-	if err != nil {
-		return ErrInvalidUUID
-	}
-
-	query := `DELETE FROM pr_reviewers WHERE pull_request_id = $1 AND reviewer_id = $2`
-
-	_, err = s.db.Exec(ctx, query, prUUID, reviewerUUID)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (s *PrReviewersStorage) AddReviewer(ctx context.Context, prID string, reviewerID string) error {
-	prUUID, err := uuid.Parse(prID)
-	if err != nil {
-		return ErrInvalidUUID
-	}
-
-	reviewerUUID, err := uuid.Parse(reviewerID)
-	if err != nil {
-		return ErrInvalidUUID
-	}
-
-	query := `
-		INSERT INTO pr_reviewers (pull_request_id, reviewer_id, assigned_at)
-		VALUES ($1, $2, $3)`
-
-	_, err = s.db.Exec(ctx, query, prUUID, reviewerUUID, time.Now())
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func (s *PrReviewersStorage) GetAssignedReviewers(ctx context.Context, prID string) ([]string, error) {
@@ -143,4 +99,51 @@ func (s *PrReviewersStorage) GetPRsByReviewer(ctx context.Context, userID string
 	}
 
 	return prs, nil
+}
+
+// ReassignReviewerAtomic атомарно переназначает ревьюера (удаляет старого и добавляет нового) в транзакции
+func (s *PrReviewersStorage) ReassignReviewerAtomic(ctx context.Context, prID, oldReviewerID, newReviewerID string) error {
+	prUUID, err := uuid.Parse(prID)
+	if err != nil {
+		return ErrInvalidUUID
+	}
+
+	oldReviewerUUID, err := uuid.Parse(oldReviewerID)
+	if err != nil {
+		return ErrInvalidUUID
+	}
+
+	newReviewerUUID, err := uuid.Parse(newReviewerID)
+	if err != nil {
+		return ErrInvalidUUID
+	}
+
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = tx.Rollback(ctx) }()
+
+	// Удаляем старого ревьюера
+	deleteQuery := `DELETE FROM pr_reviewers WHERE pull_request_id = $1 AND reviewer_id = $2`
+	_, err = tx.Exec(ctx, deleteQuery, prUUID, oldReviewerUUID)
+	if err != nil {
+		return err
+	}
+
+	// Добавляем нового ревьюера
+	insertQuery := `
+		INSERT INTO pr_reviewers (pull_request_id, reviewer_id, assigned_at)
+		VALUES ($1, $2, $3)`
+	_, err = tx.Exec(ctx, insertQuery, prUUID, newReviewerUUID, time.Now())
+	if err != nil {
+		return err
+	}
+
+	// Коммитим транзакцию
+	if err = tx.Commit(ctx); err != nil {
+		return err
+	}
+
+	return nil
 }

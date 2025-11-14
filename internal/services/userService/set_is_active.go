@@ -35,7 +35,7 @@ func (s *UserServiceImpl) SetIsActive(c *gin.Context) {
 		logger.Logger.Error("error setting user active status: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error setting user active status",
+			domain.ErrSetActiveMsg,
 		))
 		return
 	}
@@ -52,7 +52,7 @@ func (s *UserServiceImpl) SetIsActive(c *gin.Context) {
 		logger.Logger.Error("error getting user: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error getting user",
+			domain.ErrSetActiveMsg,
 		))
 		return
 	}

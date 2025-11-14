@@ -23,7 +23,7 @@ func (s *TeamServiceImpl) CreateTeam(c *gin.Context) {
 		return
 	}
 
-	teamID, err := s.teamRepo.CreateTeam(ctx, team.TeamName)
+	_, err := s.teamRepo.CreateTeamWithMembers(ctx, team.TeamName, team.Members)
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
@@ -33,32 +33,12 @@ func (s *TeamServiceImpl) CreateTeam(c *gin.Context) {
 			))
 			return
 		}
-		logger.Logger.Error("error creating team: ", err)
+		logger.Logger.Error("error creating team with members: ", err)
 		c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
 			domain.InternalError,
-			"error creating team",
+			domain.ErrCreateTeamMsg,
 		))
 		return
-	}
-
-	for i := range team.Members {
-		member := &team.Members[i]
-		user := &domain.User{
-			UserId:   member.UserId,
-			Username: member.Username,
-			TeamName: team.TeamName,
-			IsActive: member.IsActive,
-		}
-
-		err = s.userRepo.CreateOrUpdateUser(ctx, user, teamID)
-		if err != nil {
-			logger.Logger.Error("error creating/updating user: ", err)
-			c.JSON(http.StatusInternalServerError, domain.NewErrorResponse(
-				domain.InternalError,
-				"error creating/updating user",
-			))
-			return
-		}
 	}
 
 	logger.Logger.Infow("team created successfully", "team_name", team.TeamName)

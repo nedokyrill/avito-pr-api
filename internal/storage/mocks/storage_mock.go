@@ -36,19 +36,19 @@ func (m *MockTeamRepositoryInterface) EXPECT() *MockTeamRepositoryInterfaceMockR
 	return m.recorder
 }
 
-// CreateTeam mocks base method.
-func (m *MockTeamRepositoryInterface) CreateTeam(ctx context.Context, teamName string) (uuid.UUID, error) {
+// CreateTeamWithMembers mocks base method.
+func (m *MockTeamRepositoryInterface) CreateTeamWithMembers(ctx context.Context, teamName string, members []domain.TeamMember) (uuid.UUID, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateTeam", ctx, teamName)
+	ret := m.ctrl.Call(m, "CreateTeamWithMembers", ctx, teamName, members)
 	ret0, _ := ret[0].(uuid.UUID)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// CreateTeam indicates an expected call of CreateTeam.
-func (mr *MockTeamRepositoryInterfaceMockRecorder) CreateTeam(ctx, teamName interface{}) *gomock.Call {
+// CreateTeamWithMembers indicates an expected call of CreateTeamWithMembers.
+func (mr *MockTeamRepositoryInterfaceMockRecorder) CreateTeamWithMembers(ctx, teamName, members interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTeam", reflect.TypeOf((*MockTeamRepositoryInterface)(nil).CreateTeam), ctx, teamName)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTeamWithMembers", reflect.TypeOf((*MockTeamRepositoryInterface)(nil).CreateTeamWithMembers), ctx, teamName, members)
 }
 
 // GetTeamByName mocks base method.
@@ -64,21 +64,6 @@ func (m *MockTeamRepositoryInterface) GetTeamByName(ctx context.Context, teamNam
 func (mr *MockTeamRepositoryInterfaceMockRecorder) GetTeamByName(ctx, teamName interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTeamByName", reflect.TypeOf((*MockTeamRepositoryInterface)(nil).GetTeamByName), ctx, teamName)
-}
-
-// GetTeamMembersByTeamName mocks base method.
-func (m *MockTeamRepositoryInterface) GetTeamMembersByTeamName(ctx context.Context, teamName string) ([]*domain.TeamMember, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTeamMembersByTeamName", ctx, teamName)
-	ret0, _ := ret[0].([]*domain.TeamMember)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetTeamMembersByTeamName indicates an expected call of GetTeamMembersByTeamName.
-func (mr *MockTeamRepositoryInterfaceMockRecorder) GetTeamMembersByTeamName(ctx, teamName interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTeamMembersByTeamName", reflect.TypeOf((*MockTeamRepositoryInterface)(nil).GetTeamMembersByTeamName), ctx, teamName)
 }
 
 // MockUserRepositoryInterface is a mock of UserRepositoryInterface interface.
@@ -102,20 +87,6 @@ func NewMockUserRepositoryInterface(ctrl *gomock.Controller) *MockUserRepository
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockUserRepositoryInterface) EXPECT() *MockUserRepositoryInterfaceMockRecorder {
 	return m.recorder
-}
-
-// CreateOrUpdateUser mocks base method.
-func (m *MockUserRepositoryInterface) CreateOrUpdateUser(ctx context.Context, user *domain.User, teamID uuid.UUID) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateOrUpdateUser", ctx, user, teamID)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// CreateOrUpdateUser indicates an expected call of CreateOrUpdateUser.
-func (mr *MockUserRepositoryInterfaceMockRecorder) CreateOrUpdateUser(ctx, user, teamID interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateOrUpdateUser", reflect.TypeOf((*MockUserRepositoryInterface)(nil).CreateOrUpdateUser), ctx, user, teamID)
 }
 
 // GetUserByID mocks base method.
@@ -170,18 +141,18 @@ func (m *MockPullRequestRepositoryInterface) EXPECT() *MockPullRequestRepository
 	return m.recorder
 }
 
-// CreatePullRequest mocks base method.
-func (m *MockPullRequestRepositoryInterface) CreatePullRequest(ctx context.Context, pr *domain.PullRequest) error {
+// CreatePullRequestWithReviewers mocks base method.
+func (m *MockPullRequestRepositoryInterface) CreatePullRequestWithReviewers(ctx context.Context, pr *domain.PullRequest, reviewerIDs []string, needMoreReviewers bool) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreatePullRequest", ctx, pr)
+	ret := m.ctrl.Call(m, "CreatePullRequestWithReviewers", ctx, pr, reviewerIDs, needMoreReviewers)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// CreatePullRequest indicates an expected call of CreatePullRequest.
-func (mr *MockPullRequestRepositoryInterfaceMockRecorder) CreatePullRequest(ctx, pr interface{}) *gomock.Call {
+// CreatePullRequestWithReviewers indicates an expected call of CreatePullRequestWithReviewers.
+func (mr *MockPullRequestRepositoryInterfaceMockRecorder) CreatePullRequestWithReviewers(ctx, pr, reviewerIDs, needMoreReviewers interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreatePullRequest", reflect.TypeOf((*MockPullRequestRepositoryInterface)(nil).CreatePullRequest), ctx, pr)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreatePullRequestWithReviewers", reflect.TypeOf((*MockPullRequestRepositoryInterface)(nil).CreatePullRequestWithReviewers), ctx, pr, reviewerIDs, needMoreReviewers)
 }
 
 // GetPullRequestByID mocks base method.
@@ -250,20 +221,6 @@ func (m *MockPrReviewersRepositoryInterface) EXPECT() *MockPrReviewersRepository
 	return m.recorder
 }
 
-// AddReviewer mocks base method.
-func (m *MockPrReviewersRepositoryInterface) AddReviewer(ctx context.Context, prID, reviewerID string) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AddReviewer", ctx, prID, reviewerID)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// AddReviewer indicates an expected call of AddReviewer.
-func (mr *MockPrReviewersRepositoryInterfaceMockRecorder) AddReviewer(ctx, prID, reviewerID interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddReviewer", reflect.TypeOf((*MockPrReviewersRepositoryInterface)(nil).AddReviewer), ctx, prID, reviewerID)
-}
-
 // GetAssignedReviewers mocks base method.
 func (m *MockPrReviewersRepositoryInterface) GetAssignedReviewers(ctx context.Context, prID string) ([]string, error) {
 	m.ctrl.T.Helper()
@@ -294,16 +251,16 @@ func (mr *MockPrReviewersRepositoryInterfaceMockRecorder) GetPRsByReviewer(ctx, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPRsByReviewer", reflect.TypeOf((*MockPrReviewersRepositoryInterface)(nil).GetPRsByReviewer), ctx, userID)
 }
 
-// RemoveReviewer mocks base method.
-func (m *MockPrReviewersRepositoryInterface) RemoveReviewer(ctx context.Context, prID, reviewerID string) error {
+// ReassignReviewerAtomic mocks base method.
+func (m *MockPrReviewersRepositoryInterface) ReassignReviewerAtomic(ctx context.Context, prID, oldReviewerID, newReviewerID string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RemoveReviewer", ctx, prID, reviewerID)
+	ret := m.ctrl.Call(m, "ReassignReviewerAtomic", ctx, prID, oldReviewerID, newReviewerID)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// RemoveReviewer indicates an expected call of RemoveReviewer.
-func (mr *MockPrReviewersRepositoryInterfaceMockRecorder) RemoveReviewer(ctx, prID, reviewerID interface{}) *gomock.Call {
+// ReassignReviewerAtomic indicates an expected call of ReassignReviewerAtomic.
+func (mr *MockPrReviewersRepositoryInterfaceMockRecorder) ReassignReviewerAtomic(ctx, prID, oldReviewerID, newReviewerID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveReviewer", reflect.TypeOf((*MockPrReviewersRepositoryInterface)(nil).RemoveReviewer), ctx, prID, reviewerID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReassignReviewerAtomic", reflect.TypeOf((*MockPrReviewersRepositoryInterface)(nil).ReassignReviewerAtomic), ctx, prID, oldReviewerID, newReviewerID)
 }
