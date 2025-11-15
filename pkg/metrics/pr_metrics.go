@@ -11,4 +11,3 @@ var PRLifecycleDurationHours = prometheus.NewHistogram(prometheus.HistogramOpts{
 	Help:    "Time from PR creation to merge in hours",
 	Buckets: []float64{1, 6, 12, 24, 48, 72, 168},
 })
-
