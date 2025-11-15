@@ -5,11 +5,15 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/google/uuid"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
 	"github.com/pashagolub/pgxmock/v2"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+)
+
+const (
+	testID     = "test-id"
+	testStrID  = "test-str-id"
 )
 
 func TestPrReviewersStorage_GetAssignedReviewers(t *testing.T) {
@@ -21,9 +25,9 @@ func TestPrReviewersStorage_GetAssignedReviewers(t *testing.T) {
 		defer mock.Close()
 
 		storage := NewPrReviewersStorage(mock)
-		prID := uuid.New()
-		reviewer1ID := uuid.New()
-		reviewer2ID := uuid.New()
+		prID := testID
+		reviewer1ID := testID
+		reviewer2ID := testID
 
 		mock.ExpectQuery("SELECT reviewer_id").
 			WithArgs(prID).
@@ -31,11 +35,11 @@ func TestPrReviewersStorage_GetAssignedReviewers(t *testing.T) {
 				AddRow(reviewer1ID).
 				AddRow(reviewer2ID))
 
-		reviewers, err := storage.GetAssignedReviewers(ctx, prID.String())
+		reviewers, err := storage.GetAssignedReviewers(ctx, prID)
 
 		require.NoError(t, err)
 		require.Len(t, reviewers, 2)
-		assert.Equal(t, reviewer1ID.String(), reviewers[0])
+		assert.Equal(t, reviewer1ID, reviewers[0])
 		require.NoError(t, mock.ExpectationsWereMet())
 	})
 
@@ -45,30 +49,16 @@ func TestPrReviewersStorage_GetAssignedReviewers(t *testing.T) {
 		defer mock.Close()
 
 		storage := NewPrReviewersStorage(mock)
-		prID := uuid.New()
+		prID := testID
 
 		mock.ExpectQuery("SELECT reviewer_id").
 			WithArgs(prID).
 			WillReturnRows(pgxmock.NewRows([]string{"reviewer_id"}))
 
-		reviewers, err := storage.GetAssignedReviewers(ctx, prID.String())
+		reviewers, err := storage.GetAssignedReviewers(ctx, prID)
 
 		require.NoError(t, err)
 		assert.Empty(t, reviewers)
-		require.NoError(t, mock.ExpectationsWereMet())
-	})
-
-	t.Run("invalid UUID", func(t *testing.T) {
-		mock, err := pgxmock.NewPool()
-		require.NoError(t, err)
-		defer mock.Close()
-
-		storage := NewPrReviewersStorage(mock)
-
-		reviewers, err := storage.GetAssignedReviewers(ctx, "invalid-uuid")
-
-		assert.Error(t, err)
-		assert.Nil(t, reviewers)
 		require.NoError(t, mock.ExpectationsWereMet())
 	})
 }
@@ -82,20 +72,20 @@ func TestPrReviewersStorage_GetPRsByReviewer(t *testing.T) {
 		defer mock.Close()
 
 		storage := NewPrReviewersStorage(mock)
-		reviewerID := uuid.New()
-		pr1ID := uuid.New()
-		author1ID := uuid.New()
+		reviewerID := testID
+		pr1ID := testID
+		author1ID := testID
 
 		mock.ExpectQuery("SELECT pr.id, pr.name, pr.author_id, pr.status").
 			WithArgs(reviewerID).
 			WillReturnRows(pgxmock.NewRows([]string{"id", "name", "author_id", "status"}).
 				AddRow(pr1ID, "Feature A", author1ID, string(domain.PullRequestStatusOPEN)))
 
-		prs, err := storage.GetPRsByReviewer(ctx, reviewerID.String())
+		prs, err := storage.GetPRsByReviewer(ctx, reviewerID)
 
 		require.NoError(t, err)
 		require.Len(t, prs, 1)
-		assert.Equal(t, pr1ID.String(), prs[0].PullRequestId)
+		assert.Equal(t, pr1ID, prs[0].PullRequestId)
 		require.NoError(t, mock.ExpectationsWereMet())
 	})
 
@@ -105,30 +95,16 @@ func TestPrReviewersStorage_GetPRsByReviewer(t *testing.T) {
 		defer mock.Close()
 
 		storage := NewPrReviewersStorage(mock)
-		reviewerID := uuid.New()
+		reviewerID := testID
 
 		mock.ExpectQuery("SELECT pr.id, pr.name, pr.author_id, pr.status").
 			WithArgs(reviewerID).
 			WillReturnRows(pgxmock.NewRows([]string{"id", "name", "author_id", "status"}))
 
-		prs, err := storage.GetPRsByReviewer(ctx, reviewerID.String())
+		prs, err := storage.GetPRsByReviewer(ctx, reviewerID)
 
 		require.NoError(t, err)
 		assert.Empty(t, prs)
-		require.NoError(t, mock.ExpectationsWereMet())
-	})
-
-	t.Run("invalid UUID", func(t *testing.T) {
-		mock, err := pgxmock.NewPool()
-		require.NoError(t, err)
-		defer mock.Close()
-
-		storage := NewPrReviewersStorage(mock)
-
-		prs, err := storage.GetPRsByReviewer(ctx, "invalid-uuid")
-
-		assert.Error(t, err)
-		assert.Nil(t, prs)
 		require.NoError(t, mock.ExpectationsWereMet())
 	})
 }
@@ -142,9 +118,9 @@ func TestPrReviewersStorage_ReassignReviewerAtomic(t *testing.T) {
 		defer mock.Close()
 
 		storage := NewPrReviewersStorage(mock)
-		prID := uuid.NewString()
-		oldReviewerID := uuid.NewString()
-		newReviewerID := uuid.NewString()
+		prID := testStrID
+		oldReviewerID := testStrID
+		newReviewerID := testStrID
 
 		mock.ExpectBegin()
 		mock.ExpectExec("DELETE FROM pr_reviewers").
@@ -164,57 +140,15 @@ func TestPrReviewersStorage_ReassignReviewerAtomic(t *testing.T) {
 		require.NoError(t, mock.ExpectationsWereMet())
 	})
 
-	t.Run("invalid PR UUID", func(t *testing.T) {
-		mock, err := pgxmock.NewPool()
-		require.NoError(t, err)
-		defer mock.Close()
-
-		storage := NewPrReviewersStorage(mock)
-
-		err = storage.ReassignReviewerAtomic(ctx, "invalid-uuid", uuid.NewString(), uuid.NewString())
-
-		assert.Error(t, err)
-		assert.Equal(t, ErrInvalidUUID, err)
-		require.NoError(t, mock.ExpectationsWereMet())
-	})
-
-	t.Run("invalid old reviewer UUID", func(t *testing.T) {
-		mock, err := pgxmock.NewPool()
-		require.NoError(t, err)
-		defer mock.Close()
-
-		storage := NewPrReviewersStorage(mock)
-
-		err = storage.ReassignReviewerAtomic(ctx, uuid.NewString(), "invalid-uuid", uuid.NewString())
-
-		assert.Error(t, err)
-		assert.Equal(t, ErrInvalidUUID, err)
-		require.NoError(t, mock.ExpectationsWereMet())
-	})
-
-	t.Run("invalid new reviewer UUID", func(t *testing.T) {
-		mock, err := pgxmock.NewPool()
-		require.NoError(t, err)
-		defer mock.Close()
-
-		storage := NewPrReviewersStorage(mock)
-
-		err = storage.ReassignReviewerAtomic(ctx, uuid.NewString(), uuid.NewString(), "invalid-uuid")
-
-		assert.Error(t, err)
-		assert.Equal(t, ErrInvalidUUID, err)
-		require.NoError(t, mock.ExpectationsWereMet())
-	})
-
 	t.Run("error removing old reviewer - rollback", func(t *testing.T) {
 		mock, err := pgxmock.NewPool()
 		require.NoError(t, err)
 		defer mock.Close()
 
 		storage := NewPrReviewersStorage(mock)
-		prID := uuid.NewString()
-		oldReviewerID := uuid.NewString()
-		newReviewerID := uuid.NewString()
+		prID := testStrID
+		oldReviewerID := testStrID
+		newReviewerID := testStrID
 
 		mock.ExpectBegin()
 		mock.ExpectExec("DELETE FROM pr_reviewers").
@@ -235,9 +169,9 @@ func TestPrReviewersStorage_ReassignReviewerAtomic(t *testing.T) {
 		defer mock.Close()
 
 		storage := NewPrReviewersStorage(mock)
-		prID := uuid.NewString()
-		oldReviewerID := uuid.NewString()
-		newReviewerID := uuid.NewString()
+		prID := testStrID
+		oldReviewerID := testStrID
+		newReviewerID := testStrID
 
 		mock.ExpectBegin()
 		mock.ExpectExec("DELETE FROM pr_reviewers").
@@ -262,9 +196,9 @@ func TestPrReviewersStorage_ReassignReviewerAtomic(t *testing.T) {
 		defer mock.Close()
 
 		storage := NewPrReviewersStorage(mock)
-		prID := uuid.NewString()
-		oldReviewerID := uuid.NewString()
-		newReviewerID := uuid.NewString()
+		prID := testStrID
+		oldReviewerID := testStrID
+		newReviewerID := testStrID
 
 		mock.ExpectBegin()
 		mock.ExpectExec("DELETE FROM pr_reviewers").

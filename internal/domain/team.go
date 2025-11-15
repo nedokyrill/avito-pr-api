@@ -6,3 +6,8 @@ import "github.com/nedokyrill/avito-pr-api/internal/generated"
 
 type Team = generated.Team
 type TeamMember = generated.TeamMember
+
+type DeactivateTeamMembersRequest struct {
+	TeamName string   `json:"team_name" binding:"required"`
+	UserIDs  []string `json:"user_ids"` // если пустой - деактивировать всех
+}

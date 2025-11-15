@@ -21,5 +21,6 @@ func (h *UserHandler) InitUserHandlers(router *gin.RouterGroup) {
 	{
 		usersGroup.POST("/setIsActive", middleware.AuthMiddleware(), h.userService.SetIsActive)
 		usersGroup.GET("/getReview", middleware.AuthMiddleware(), h.userService.GetUserReviews)
+		usersGroup.POST("/deactivateTeamMembers", middleware.AuthMiddleware(), h.userService.DeactivateTeamMembers)
 	}
 }

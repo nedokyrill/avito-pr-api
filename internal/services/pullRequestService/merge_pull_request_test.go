@@ -11,7 +11,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
-	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
 	"github.com/nedokyrill/avito-pr-api/internal/storage/mocks"
@@ -31,8 +30,8 @@ func TestPullRequestService_MergePullRequest(t *testing.T) {
 	service := NewPullRequestService(mockPrRepo, mockPrReviewersRepo, mockUserRepo, mockTeamRepo)
 
 	t.Run("successfully merge PR", func(t *testing.T) {
-		prID := uuid.NewString()
-		authorID := uuid.NewString()
+		prID := testStrID
+		authorID := testStrID
 
 		pr := &domain.PullRequest{
 			PullRequestId:   prID,
@@ -75,7 +74,7 @@ func TestPullRequestService_MergePullRequest(t *testing.T) {
 	})
 
 	t.Run("PR not found", func(t *testing.T) {
-		prID := uuid.NewString()
+		prID := testStrID
 
 		requestBody := `{
 			"pull_request_id": "` + prID + `"
@@ -94,7 +93,7 @@ func TestPullRequestService_MergePullRequest(t *testing.T) {
 	})
 
 	t.Run("error getting reviewers", func(t *testing.T) {
-		prID := uuid.NewString()
+		prID := testStrID
 		createdAt := time.Now().Add(-2 * time.Hour)
 
 		pr := &domain.PullRequest{
@@ -124,7 +123,7 @@ func TestPullRequestService_MergePullRequest(t *testing.T) {
 	})
 
 	t.Run("error merging PR", func(t *testing.T) {
-		prID := uuid.NewString()
+		prID := testStrID
 		createdAt := time.Now().Add(-2 * time.Hour)
 
 		pr := &domain.PullRequest{
@@ -153,8 +152,8 @@ func TestPullRequestService_MergePullRequest(t *testing.T) {
 	})
 
 	t.Run("PR already merged", func(t *testing.T) {
-		prID := uuid.NewString()
-		authorID := uuid.NewString()
+		prID := testStrID
+		authorID := testStrID
 
 		pr := &domain.PullRequest{
 			PullRequestId:   prID,

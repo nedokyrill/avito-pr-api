@@ -2,14 +2,10 @@ package userStorage
 
 import (
 	"context"
-	"errors"
 
-	"github.com/google/uuid"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
 	"github.com/nedokyrill/avito-pr-api/pkg/utils/db"
 )
-
-var ErrInvalidUUID = errors.New(domain.InvalidUUIDErr)
 
 type UserStorage struct {
 	db db.Querier
@@ -22,11 +18,6 @@ func NewUserStorage(db db.Querier) *UserStorage {
 }
 
 func (s *UserStorage) GetUserByID(ctx context.Context, userID string) (*domain.User, error) {
-	userUUID, err := uuid.Parse(userID)
-	if err != nil {
-		return nil, ErrInvalidUUID
-	}
-
 	var username string
 	var teamName string
 	var isActive bool
@@ -37,7 +28,7 @@ func (s *UserStorage) GetUserByID(ctx context.Context, userID string) (*domain.U
 		LEFT JOIN teams t ON u.team_id = t.id
 		WHERE u.id = $1`
 
-	err = s.db.QueryRow(ctx, query, userUUID).Scan(&username, &teamName, &isActive)
+	err := s.db.QueryRow(ctx, query, userID).Scan(&username, &teamName, &isActive)
 	if err != nil {
 		return nil, err
 	}
@@ -53,17 +44,12 @@ func (s *UserStorage) GetUserByID(ctx context.Context, userID string) (*domain.U
 }
 
 func (s *UserStorage) SetUserIsActive(ctx context.Context, userID string, isActive bool) error {
-	userUUID, err := uuid.Parse(userID)
-	if err != nil {
-		return ErrInvalidUUID
-	}
-
 	query := `
 		UPDATE users 
 		SET is_active = $1 
 		WHERE id = $2`
 
-	_, err = s.db.Exec(ctx, query, isActive, userUUID)
+	_, err := s.db.Exec(ctx, query, isActive, userID)
 	if err != nil {
 		return err
 	}

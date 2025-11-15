@@ -10,6 +10,7 @@ import (
 type TeamRepositoryInterface interface {
 	GetTeamByName(ctx context.Context, teamName string) (*domain.Team, error)
 	CreateTeamWithMembers(ctx context.Context, teamName string, members []domain.TeamMember) (uuid.UUID, error)
+	DeactivateTeamMembers(ctx context.Context, teamName string, userIDs []string, reassignments []domain.ReviewerReassignment) ([]string, error)
 }
 
 type UserRepositoryInterface interface {

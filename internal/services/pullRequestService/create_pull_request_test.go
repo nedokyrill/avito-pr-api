@@ -10,7 +10,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
-	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
@@ -38,10 +37,10 @@ func TestPullRequestService_CreatePullRequest(t *testing.T) {
 	service := NewPullRequestService(mockPrRepo, mockPrReviewersRepo, mockUserRepo, mockTeamRepo)
 
 	t.Run("successfully create PR with reviewers", func(t *testing.T) {
-		prID := uuid.NewString()
-		authorID := uuid.NewString()
-		reviewer1ID := uuid.NewString()
-		reviewer2ID := uuid.NewString()
+		prID := testStrID
+		authorID := testStrID
+		reviewer1ID := testStrID
+		reviewer2ID := testStrID
 
 		author := &domain.User{
 			UserId:   authorID,
@@ -95,8 +94,8 @@ func TestPullRequestService_CreatePullRequest(t *testing.T) {
 	})
 
 	t.Run("author not found", func(t *testing.T) {
-		prID := uuid.NewString()
-		authorID := uuid.NewString()
+		prID := testStrID
+		authorID := testStrID
 
 		requestBody := `{
 			"pull_request_id": "` + prID + `",
@@ -117,8 +116,8 @@ func TestPullRequestService_CreatePullRequest(t *testing.T) {
 	})
 
 	t.Run("error getting team", func(t *testing.T) {
-		prID := uuid.NewString()
-		authorID := uuid.NewString()
+		prID := testStrID
+		authorID := testStrID
 
 		author := &domain.User{
 			UserId:   authorID,
@@ -147,9 +146,9 @@ func TestPullRequestService_CreatePullRequest(t *testing.T) {
 	})
 
 	t.Run("PR already exists", func(t *testing.T) {
-		prID := uuid.NewString()
-		authorID := uuid.NewString()
-		reviewer1ID := uuid.NewString()
+		prID := testStrID
+		authorID := testStrID
+		reviewer1ID := testStrID
 
 		author := &domain.User{
 			UserId:   authorID,
@@ -189,9 +188,9 @@ func TestPullRequestService_CreatePullRequest(t *testing.T) {
 	})
 
 	t.Run("error creating PR with reviewers", func(t *testing.T) {
-		prID := uuid.NewString()
-		authorID := uuid.NewString()
-		reviewer1ID := uuid.NewString()
+		prID := testStrID
+		authorID := testStrID
+		reviewer1ID := testStrID
 
 		author := &domain.User{
 			UserId:   authorID,

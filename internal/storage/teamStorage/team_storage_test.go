@@ -13,7 +13,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const testTeam = "Backend Team"
+const (
+	testTeam   = "Backend Team"
+	testStrID  = "test-str-id"
+)
 
 func TestTeamStorage_GetTeamByName(t *testing.T) {
 	ctx := context.Background()
@@ -25,9 +28,9 @@ func TestTeamStorage_GetTeamByName(t *testing.T) {
 
 		storage := NewTeamStorage(mock)
 		teamName := testTeam
-		teamID := uuid.New()
-		user1ID := uuid.New()
-		user2ID := uuid.New()
+		teamID := uuid.MustParse("550e8400-e29b-41d4-a716-446655440000")
+		user1ID := "test-id"
+		user2ID := "test-id"
 
 		mock.ExpectQuery("SELECT id FROM teams WHERE name").
 			WithArgs(teamName).
@@ -78,9 +81,9 @@ func TestTeamStorage_CreateTeamWithMembers(t *testing.T) {
 
 		storage := NewTeamStorage(mock)
 		teamName := testTeam
-		teamID := uuid.New()
-		user1ID := uuid.NewString()
-		user2ID := uuid.NewString()
+		teamID := uuid.MustParse("550e8400-e29b-41d4-a716-446655440001")
+		user1ID := testStrID
+		user2ID := testStrID
 
 		members := []domain.TeamMember{
 			{UserId: user1ID, Username: "Alice", IsActive: true},
@@ -118,7 +121,7 @@ func TestTeamStorage_CreateTeamWithMembers(t *testing.T) {
 		storage := NewTeamStorage(mock)
 		teamName := testTeam
 		members := []domain.TeamMember{
-			{UserId: uuid.NewString(), Username: "Alice", IsActive: true},
+			{UserId: testStrID, Username: "Alice", IsActive: true},
 		}
 
 		mock.ExpectBegin()
@@ -141,8 +144,8 @@ func TestTeamStorage_CreateTeamWithMembers(t *testing.T) {
 
 		storage := NewTeamStorage(mock)
 		teamName := testTeam
-		teamID := uuid.New()
-		user1ID := uuid.NewString()
+		teamID := uuid.MustParse("550e8400-e29b-41d4-a716-446655440002")
+		user1ID := testStrID
 
 		members := []domain.TeamMember{
 			{UserId: user1ID, Username: "Alice", IsActive: true},
@@ -165,31 +168,55 @@ func TestTeamStorage_CreateTeamWithMembers(t *testing.T) {
 		assert.Equal(t, uuid.Nil, resultID)
 		require.NoError(t, mock.ExpectationsWereMet())
 	})
+}
 
-	t.Run("invalid user UUID", func(t *testing.T) {
-		mock, err := pgxmock.NewPool()
-		require.NoError(t, err)
-		defer mock.Close()
+func TestTeamStorage_DeactivateTeamMembers(t *testing.T) {
+	mock, err := pgxmock.NewPool()
+	require.NoError(t, err)
+	defer mock.Close()
 
-		storage := NewTeamStorage(mock)
-		teamName := testTeam
-		teamID := uuid.New()
+	storage := NewTeamStorage(mock)
 
-		members := []domain.TeamMember{
-			{UserId: "invalid-uuid", Username: "Alice", IsActive: true},
-		}
+	t.Run("successfully deactivate specific users with reassignments", func(t *testing.T) {
+		teamName := "Backend"
+		userID1 := "user-1"
+		userID2 := "user-2"
+		prID := "pr-123"
+		newReviewerID := "user-3"
 
 		mock.ExpectBegin()
-		mock.ExpectQuery("INSERT INTO teams").
-			WithArgs(teamName).
-			WillReturnRows(pgxmock.NewRows([]string{"id"}).AddRow(teamID))
 
-		mock.ExpectRollback()
+		// UPDATE users query
+		mock.ExpectQuery(`UPDATE users u`).
+			WithArgs(teamName, []string{userID1, userID2}).
+			WillReturnRows(pgxmock.NewRows([]string{"id"}).AddRow(userID1).AddRow(userID2))
 
-		resultID, err := storage.CreateTeamWithMembers(ctx, teamName, members)
+		// DELETE old reviewer
+		mock.ExpectExec(`DELETE FROM pr_reviewers`).
+			WithArgs(prID, userID1).
+			WillReturnResult(pgxmock.NewResult("DELETE", 1))
 
-		assert.Error(t, err)
-		assert.Equal(t, uuid.Nil, resultID)
+		// INSERT new reviewer
+		mock.ExpectExec(`INSERT INTO pr_reviewers`).
+			WithArgs(prID, newReviewerID).
+			WillReturnResult(pgxmock.NewResult("INSERT", 1))
+
+		mock.ExpectCommit()
+
+		reassignments := []domain.ReviewerReassignment{
+			{
+				PrID:          prID,
+				OldReviewerID: userID1,
+				NewReviewerID: newReviewerID,
+			},
+		}
+
+		result, err := storage.DeactivateTeamMembers(context.Background(), teamName, []string{userID1, userID2}, reassignments)
+
+		require.NoError(t, err)
+		assert.Len(t, result, 2)
+		assert.Contains(t, result, userID1)
+		assert.Contains(t, result, userID2)
 		require.NoError(t, mock.ExpectationsWereMet())
 	})
 }

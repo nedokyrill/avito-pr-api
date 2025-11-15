@@ -26,8 +26,6 @@ const (
 
 // Ошибки между репо и сервис слоями
 const (
-	InvalidUUIDErr string = "invalid uuid"
-
 	TeamNotExistsErr string = "team does not exist"
 	NoUsersInTeamErr string = "no users in team"
 )

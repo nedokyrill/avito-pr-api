@@ -9,12 +9,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
-	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
 	"github.com/nedokyrill/avito-pr-api/internal/storage/mocks"
 	"github.com/stretchr/testify/require"
 )
+
+const testStrID = "test-str-id"
 
 func TestPullRequestService_ReassignReviewer(t *testing.T) {
 	ctrl := gomock.NewController(t)
@@ -28,10 +29,10 @@ func TestPullRequestService_ReassignReviewer(t *testing.T) {
 	service := NewPullRequestService(mockPrRepo, mockPrReviewersRepo, mockUserRepo, mockTeamRepo)
 
 	t.Run("successfully reassign reviewer", func(t *testing.T) {
-		prID := uuid.NewString()
-		oldReviewerID := uuid.NewString()
-		newReviewerID := uuid.NewString()
-		authorID := uuid.NewString()
+		prID := "pr-123"
+		oldReviewerID := "user-bob"
+		newReviewerID := "user-charlie"
+		authorID := "user-alice"
 
 		pr := &domain.PullRequest{
 			PullRequestId:   prID,
@@ -90,8 +91,8 @@ func TestPullRequestService_ReassignReviewer(t *testing.T) {
 	})
 
 	t.Run("PR not found", func(t *testing.T) {
-		prID := uuid.NewString()
-		reviewerID := uuid.NewString()
+		prID := testStrID
+		reviewerID := testStrID
 
 		requestBody := `{
 			"pull_request_id": "` + prID + `",
@@ -111,8 +112,8 @@ func TestPullRequestService_ReassignReviewer(t *testing.T) {
 	})
 
 	t.Run("PR already merged", func(t *testing.T) {
-		prID := uuid.NewString()
-		reviewerID := uuid.NewString()
+		prID := testStrID
+		reviewerID := testStrID
 
 		pr := &domain.PullRequest{
 			PullRequestId:   prID,
@@ -138,9 +139,9 @@ func TestPullRequestService_ReassignReviewer(t *testing.T) {
 	})
 
 	t.Run("reviewer not assigned", func(t *testing.T) {
-		prID := uuid.NewString()
-		reviewerID := uuid.NewString()
-		otherReviewerID := uuid.NewString()
+		prID := "pr-123"
+		reviewerID := "user-bob"
+		otherReviewerID := "user-alice"
 
 		pr := &domain.PullRequest{
 			PullRequestId:   prID,
@@ -167,8 +168,8 @@ func TestPullRequestService_ReassignReviewer(t *testing.T) {
 	})
 
 	t.Run("error getting user", func(t *testing.T) {
-		prID := uuid.NewString()
-		reviewerID := uuid.NewString()
+		prID := "pr-456"
+		reviewerID := "user-david"
 
 		pr := &domain.PullRequest{
 			PullRequestId:   prID,
@@ -196,10 +197,10 @@ func TestPullRequestService_ReassignReviewer(t *testing.T) {
 	})
 
 	t.Run("error reassigning reviewer", func(t *testing.T) {
-		prID := uuid.NewString()
-		oldReviewerID := uuid.NewString()
-		newReviewerID := uuid.NewString()
-		authorID := uuid.NewString()
+		prID := "pr-789"
+		oldReviewerID := "user-eve"
+		newReviewerID := "user-frank"
+		authorID := "user-grace"
 
 		pr := &domain.PullRequest{
 			PullRequestId:   prID,
@@ -210,7 +211,7 @@ func TestPullRequestService_ReassignReviewer(t *testing.T) {
 
 		oldReviewer := &domain.User{
 			UserId:   oldReviewerID,
-			Username: "Bob",
+			Username: "Eve",
 			TeamName: "Backend",
 			IsActive: true,
 		}
@@ -218,9 +219,9 @@ func TestPullRequestService_ReassignReviewer(t *testing.T) {
 		team := &domain.Team{
 			TeamName: "Backend",
 			Members: []domain.TeamMember{
-				{UserId: authorID, Username: "Alice", IsActive: true},
-				{UserId: oldReviewerID, Username: "Bob", IsActive: true},
-				{UserId: newReviewerID, Username: "Charlie", IsActive: true},
+				{UserId: authorID, Username: "Grace", IsActive: true},
+				{UserId: oldReviewerID, Username: "Eve", IsActive: true},
+				{UserId: newReviewerID, Username: "Frank", IsActive: true},
 			},
 		}
 

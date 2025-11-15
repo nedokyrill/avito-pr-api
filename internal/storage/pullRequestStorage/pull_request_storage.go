@@ -2,15 +2,11 @@ package pullRequestStorage
 
 import (
 	"context"
-	"errors"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
 	"github.com/nedokyrill/avito-pr-api/pkg/utils/db"
 )
-
-var ErrInvalidUUID = errors.New(domain.InvalidUUIDErr)
 
 type PullRequestStorage struct {
 	db db.Querier
@@ -23,13 +19,8 @@ func NewPullRequestStorage(db db.Querier) *PullRequestStorage {
 }
 
 func (s *PullRequestStorage) GetPullRequestByID(ctx context.Context, prID string) (*domain.PullRequest, error) {
-	prUUID, err := uuid.Parse(prID)
-	if err != nil {
-		return nil, ErrInvalidUUID
-	}
-
 	var name string
-	var authorUUID uuid.UUID
+	var authorID string
 	var status string
 	var createdAt time.Time
 	var mergedAt *time.Time
@@ -39,7 +30,7 @@ func (s *PullRequestStorage) GetPullRequestByID(ctx context.Context, prID string
 		FROM pull_requests
 		WHERE id = $1`
 
-	err = s.db.QueryRow(ctx, query, prUUID).Scan(&name, &authorUUID, &status, &createdAt, &mergedAt)
+	err := s.db.QueryRow(ctx, query, prID).Scan(&name, &authorID, &status, &createdAt, &mergedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +38,7 @@ func (s *PullRequestStorage) GetPullRequestByID(ctx context.Context, prID string
 	pr := &domain.PullRequest{
 		PullRequestId:     prID,
 		PullRequestName:   name,
-		AuthorId:          authorUUID.String(),
+		AuthorId:          authorID,
 		Status:            domain.PullRequestStatus(status),
 		AssignedReviewers: nil,
 		CreatedAt:         &createdAt,
@@ -58,11 +49,6 @@ func (s *PullRequestStorage) GetPullRequestByID(ctx context.Context, prID string
 }
 
 func (s *PullRequestStorage) MergePullRequest(ctx context.Context, prID string) error {
-	prUUID, err := uuid.Parse(prID)
-	if err != nil {
-		return ErrInvalidUUID
-	}
-
 	mergedAt := time.Now()
 
 	query := `
@@ -70,7 +56,7 @@ func (s *PullRequestStorage) MergePullRequest(ctx context.Context, prID string) 
 		SET status = $1, merged_at = $2
 		WHERE id = $3 AND status != $1`
 
-	_, err = s.db.Exec(ctx, query, string(domain.PullRequestStatusMERGED), mergedAt, prUUID)
+	_, err := s.db.Exec(ctx, query, string(domain.PullRequestStatusMERGED), mergedAt, prID)
 	if err != nil {
 		return err
 	}
@@ -78,14 +64,9 @@ func (s *PullRequestStorage) MergePullRequest(ctx context.Context, prID string) 
 	return nil
 }
 func (s *PullRequestStorage) SetNeedMoreReviewers(ctx context.Context, prID string, needMore bool) error {
-	prUUID, err := uuid.Parse(prID)
-	if err != nil {
-		return ErrInvalidUUID
-	}
-
 	query := `UPDATE pull_requests SET need_more_reviewers = $1 WHERE id = $2`
 
-	_, err = s.db.Exec(ctx, query, needMore, prUUID)
+	_, err := s.db.Exec(ctx, query, needMore, prID)
 	if err != nil {
 		return err
 	}
@@ -94,16 +75,6 @@ func (s *PullRequestStorage) SetNeedMoreReviewers(ctx context.Context, prID stri
 }
 
 func (s *PullRequestStorage) CreatePullRequestWithReviewers(ctx context.Context, pr *domain.PullRequest, reviewerIDs []string, needMoreReviewers bool) error {
-	prUUID, err := uuid.Parse(pr.PullRequestId)
-	if err != nil {
-		return ErrInvalidUUID
-	}
-
-	authorUUID, err := uuid.Parse(pr.AuthorId)
-	if err != nil {
-		return ErrInvalidUUID
-	}
-
 	tx, err := s.db.Begin(ctx)
 	if err != nil {
 		return err
@@ -111,7 +82,7 @@ func (s *PullRequestStorage) CreatePullRequestWithReviewers(ctx context.Context,
 	defer func() { _ = tx.Rollback(ctx) }()
 
 	prQuery := `INSERT INTO pull_requests (id, name, author_id, status) VALUES ($1, $2, $3, $4)`
-	_, err = tx.Exec(ctx, prQuery, prUUID, pr.PullRequestName, authorUUID, string(pr.Status))
+	_, err = tx.Exec(ctx, prQuery, pr.PullRequestId, pr.PullRequestName, pr.AuthorId, string(pr.Status))
 	if err != nil {
 		return err
 	}
@@ -122,12 +93,7 @@ func (s *PullRequestStorage) CreatePullRequestWithReviewers(ctx context.Context,
 
 	now := time.Now()
 	for _, reviewerID := range reviewerIDs {
-		reviewerUUID, parseErr := uuid.Parse(reviewerID)
-		if parseErr != nil {
-			return parseErr
-		}
-
-		_, err = tx.Exec(ctx, reviewerQuery, prUUID, reviewerUUID, now)
+		_, err = tx.Exec(ctx, reviewerQuery, pr.PullRequestId, reviewerID, now)
 		if err != nil {
 			return err
 		}
@@ -135,7 +101,7 @@ func (s *PullRequestStorage) CreatePullRequestWithReviewers(ctx context.Context,
 
 	if needMoreReviewers {
 		updateQuery := `UPDATE pull_requests SET need_more_reviewers = $1 WHERE id = $2`
-		_, err = tx.Exec(ctx, updateQuery, true, prUUID)
+		_, err = tx.Exec(ctx, updateQuery, true, pr.PullRequestId)
 		if err != nil {
 			return err
 		}

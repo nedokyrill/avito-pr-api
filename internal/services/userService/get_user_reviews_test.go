@@ -9,7 +9,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
-	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
 	"github.com/nedokyrill/avito-pr-api/internal/storage/mocks"
@@ -23,10 +22,10 @@ func TestUserService_GetUserReviews(t *testing.T) {
 
 	mockUserRepo := mocks.NewMockUserRepositoryInterface(ctrl)
 	mockPrReviewersRepo := mocks.NewMockPrReviewersRepositoryInterface(ctrl)
-	service := NewUserService(mockUserRepo, mockPrReviewersRepo)
+	service := NewUserService(mockUserRepo, mockPrReviewersRepo, nil)
 
 	t.Run("successfully get user reviews", func(t *testing.T) {
-		userID := uuid.NewString()
+		userID := testUserIDStr
 		user := &domain.User{
 			UserId:   userID,
 			Username: "Alice",
@@ -35,9 +34,9 @@ func TestUserService_GetUserReviews(t *testing.T) {
 
 		prs := []domain.PullRequestShort{
 			{
-				PullRequestId:   uuid.NewString(),
+				PullRequestId:   testUserIDStr,
 				PullRequestName: "Feature A",
-				AuthorId:        uuid.NewString(),
+				AuthorId:        testUserIDStr,
 				Status:          domain.PullRequestStatusOPEN,
 			},
 		}
@@ -79,7 +78,7 @@ func TestUserService_GetUserReviews(t *testing.T) {
 	})
 
 	t.Run("user not found", func(t *testing.T) {
-		userID := uuid.NewString()
+		userID := testUserIDStr
 
 		w := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(w)
@@ -95,7 +94,7 @@ func TestUserService_GetUserReviews(t *testing.T) {
 	})
 
 	t.Run("error getting reviews", func(t *testing.T) {
-		userID := uuid.NewString()
+		userID := testUserIDStr
 		user := &domain.User{
 			UserId:   userID,
 			Username: "Alice",

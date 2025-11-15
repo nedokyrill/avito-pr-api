@@ -55,7 +55,7 @@ func Run() {
 
 	// Init SERVICE layer
 	teamSvc := teamService.NewTeamService(teamRepo, userRepo)
-	userSvc := userService.NewUserService(userRepo, prReviewersRepo)
+	userSvc := userService.NewUserService(userRepo, prReviewersRepo, teamRepo)
 	prSvc := pullRequestService.NewPullRequestService(prRepo, prReviewersRepo, userRepo, teamRepo)
 
 	// Init ROUTER

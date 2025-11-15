@@ -51,6 +51,21 @@ func (mr *MockTeamRepositoryInterfaceMockRecorder) CreateTeamWithMembers(ctx, te
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTeamWithMembers", reflect.TypeOf((*MockTeamRepositoryInterface)(nil).CreateTeamWithMembers), ctx, teamName, members)
 }
 
+// DeactivateTeamMembers mocks base method.
+func (m *MockTeamRepositoryInterface) DeactivateTeamMembers(ctx context.Context, teamName string, userIDs []string, reassignments []domain.ReviewerReassignment) ([]string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeactivateTeamMembers", ctx, teamName, userIDs, reassignments)
+	ret0, _ := ret[0].([]string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeactivateTeamMembers indicates an expected call of DeactivateTeamMembers.
+func (mr *MockTeamRepositoryInterfaceMockRecorder) DeactivateTeamMembers(ctx, teamName, userIDs, reassignments interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeactivateTeamMembers", reflect.TypeOf((*MockTeamRepositoryInterface)(nil).DeactivateTeamMembers), ctx, teamName, userIDs, reassignments)
+}
+
 // GetTeamByName mocks base method.
 func (m *MockTeamRepositoryInterface) GetTeamByName(ctx context.Context, teamName string) (*domain.Team, error) {
 	m.ctrl.T.Helper()

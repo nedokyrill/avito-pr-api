@@ -7,7 +7,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/stretchr/testify/require"
 )
@@ -26,29 +25,31 @@ func TestIntegrationPullRequestFlow(t *testing.T) {
 
 	// Создание команды
 	teamName := "Backend"
-	sqlInsertTeam := `INSERT INTO teams (name) VALUES ($1) RETURNING id`
-	var teamID uuid.UUID
-	err = conn.QueryRow(ctx, sqlInsertTeam, teamName).Scan(&teamID)
+	teamID := "team-backend-1"
+	sqlInsertTeam := `INSERT INTO teams (id, name) VALUES ($1, $2) RETURNING id`
+	var returnedTeamID string
+	err = conn.QueryRow(ctx, sqlInsertTeam, teamID, teamName).Scan(&returnedTeamID)
 	require.NoError(t, err, "команда не создалась")
-	require.NotEqual(t, uuid.Nil, teamID, "ID команды должен быть валидным")
+	require.Equal(t, teamID, returnedTeamID, "ID команды должен совпадать")
 
 	// Создание пользователей
 	users := []struct {
 		name     string
 		isActive bool
-		id       uuid.UUID
+		id       string
 	}{
-		{name: "Alice", isActive: true},   // автор
-		{name: "Bob", isActive: true},     // ревьювер 1
-		{name: "Charlie", isActive: true}, // ревьювер 2
-		{name: "David", isActive: false},  // неактивный (не должен быть назначен)
+		{name: "Alice", isActive: true, id: "user-alice-1"},     // автор
+		{name: "Bob", isActive: true, id: "user-bob-1"},         // ревьювер 1
+		{name: "Charlie", isActive: true, id: "user-charlie-1"}, // ревьювер 2
+		{name: "David", isActive: false, id: "user-david-1"},    // неактивный (не должен быть назначен)
 	}
 
-	sqlInsertUser := `INSERT INTO users (name, team_id, is_active) VALUES ($1, $2, $3) RETURNING id`
+	sqlInsertUser := `INSERT INTO users (id, name, team_id, is_active) VALUES ($1, $2, $3, $4) RETURNING id`
 	for i := range users {
-		err = conn.QueryRow(ctx, sqlInsertUser, users[i].name, teamID, users[i].isActive).Scan(&users[i].id)
+		var returnedID string
+		err = conn.QueryRow(ctx, sqlInsertUser, users[i].id, users[i].name, teamID, users[i].isActive).Scan(&returnedID)
 		require.NoError(t, err, "пользователь %s не создался", users[i].name)
-		require.NotEqual(t, uuid.Nil, users[i].id, "ID пользователя должен быть валидным")
+		require.Equal(t, users[i].id, returnedID, "ID пользователя должен совпадать")
 	}
 
 	authorID := users[0].id
@@ -57,12 +58,13 @@ func TestIntegrationPullRequestFlow(t *testing.T) {
 
 	// Создание Pull Request
 	prName := "Add new feature"
-	sqlInsertPR := `INSERT INTO pull_requests (name, author_id, status) VALUES ($1, $2, 'OPEN') RETURNING id, created_at`
-	var prID uuid.UUID
+	prID := "pr-feature-1"
+	sqlInsertPR := `INSERT INTO pull_requests (id, name, author_id, status) VALUES ($1, $2, $3, 'OPEN') RETURNING id, created_at`
+	var returnedPrID string
 	var createdAt time.Time
-	err = conn.QueryRow(ctx, sqlInsertPR, prName, authorID).Scan(&prID, &createdAt)
+	err = conn.QueryRow(ctx, sqlInsertPR, prID, prName, authorID).Scan(&returnedPrID, &createdAt)
 	require.NoError(t, err, "PR не создался")
-	require.NotEqual(t, uuid.Nil, prID, "ID PR должен быть валидным")
+	require.Equal(t, prID, returnedPrID, "ID PR должен совпадать")
 	require.False(t, createdAt.IsZero(), "created_at должен быть заполнен")
 
 	// Назначение ревьюеров (до 2 активных участников, исключая автора)
@@ -101,9 +103,9 @@ func TestIntegrationPullRequestFlow(t *testing.T) {
 	require.NoError(t, err, "не удалось выполнить запрос ревьюеров")
 	defer rows.Close()
 
-	var assignedReviewers []uuid.UUID
+	var assignedReviewers []string
 	for rows.Next() {
-		var reviewerID uuid.UUID
+		var reviewerID string
 		err = rows.Scan(&reviewerID)
 		require.NoError(t, err, "не удалось прочитать ID ревьювера")
 		assignedReviewers = append(assignedReviewers, reviewerID)

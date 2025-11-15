@@ -17,6 +17,7 @@ const (
 	ErrCreateTeamMsg string = "error with creating team"
 	ErrGetTeamMsg    string = "error with getting team"
 
-	ErrSetActiveMsg      string = "error with setting active state"
-	ErrGetUserReviewsMsg string = "error with getting user reviews"
+	ErrSetActiveMsg           string = "error with setting active state"
+	ErrGetUserReviewsMsg      string = "error with getting user reviews"
+	ErrDeactivatingUsersMsg   string = "error with deactivating users"
 )

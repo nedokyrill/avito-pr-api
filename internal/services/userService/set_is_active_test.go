@@ -10,7 +10,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
-	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
 	"github.com/nedokyrill/avito-pr-api/internal/storage/mocks"
@@ -19,6 +18,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
 )
+
+const testUserIDStr = "test-str-id"
 
 func init() {
 	gin.SetMode(gin.TestMode)
@@ -31,10 +32,10 @@ func TestUserService_SetIsActive(t *testing.T) {
 
 	mockUserRepo := mocks.NewMockUserRepositoryInterface(ctrl)
 	mockPrReviewersRepo := mocks.NewMockPrReviewersRepositoryInterface(ctrl)
-	service := NewUserService(mockUserRepo, mockPrReviewersRepo)
+	service := NewUserService(mockUserRepo, mockPrReviewersRepo, nil)
 
 	t.Run("successfully set user active", func(t *testing.T) {
-		userID := uuid.NewString()
+		userID := testUserIDStr
 		user := &domain.User{
 			UserId:   userID,
 			Username: "Alice",
@@ -84,7 +85,7 @@ func TestUserService_SetIsActive(t *testing.T) {
 	})
 
 	t.Run("user not found when setting status", func(t *testing.T) {
-		userID := uuid.NewString()
+		userID := testUserIDStr
 		requestBody := `{
 			"user_id": "` + userID + `",
 			"is_active": true
@@ -105,7 +106,7 @@ func TestUserService_SetIsActive(t *testing.T) {
 	})
 
 	t.Run("error getting user after update", func(t *testing.T) {
-		userID := uuid.NewString()
+		userID := testUserIDStr
 		requestBody := `{
 			"user_id": "` + userID + `",
 			"is_active": true

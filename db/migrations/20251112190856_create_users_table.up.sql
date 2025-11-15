@@ -1,5 +1,5 @@
 create table if not exists users (
-    id uuid primary key default gen_random_uuid(),
+    id varchar(255) primary key,
     name varchar(255) not null,
     team_id uuid references teams(id) on delete cascade,
     is_active boolean not null default true,

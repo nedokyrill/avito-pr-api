@@ -9,8 +9,8 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
+	"github.com/golang/mock/gomock"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
 	"github.com/nedokyrill/avito-pr-api/internal/storage/mocks"
 	"github.com/nedokyrill/avito-pr-api/pkg/utils/logger"
@@ -34,8 +34,8 @@ func TestTeamService_CreateTeam(t *testing.T) {
 
 	t.Run("successfully create team with members", func(t *testing.T) {
 		teamID := uuid.New()
-		user1ID := uuid.NewString()
-		user2ID := uuid.NewString()
+		user1ID := "user-alice-1"
+		user2ID := "user-bob-1"
 
 		requestBody := `{
 			"team_name": "Backend Team",
@@ -99,7 +99,7 @@ func TestTeamService_CreateTeam(t *testing.T) {
 	})
 
 	t.Run("error creating team with members", func(t *testing.T) {
-		userID := uuid.NewString()
+		userID := "user-alice-2"
 
 		requestBody := `{
 			"team_name": "Backend Team",

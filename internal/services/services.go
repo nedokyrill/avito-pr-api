@@ -12,6 +12,7 @@ type TeamService interface {
 type UserService interface {
 	SetIsActive(c *gin.Context)
 	GetUserReviews(c *gin.Context)
+	DeactivateTeamMembers(c *gin.Context)
 }
 
 type PullRequestService interface {

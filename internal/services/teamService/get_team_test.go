@@ -9,7 +9,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
-	"github.com/google/uuid"
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
 	"github.com/nedokyrill/avito-pr-api/internal/storage/mocks"
 	"github.com/nedokyrill/avito-pr-api/internal/storage/teamStorage"
@@ -29,8 +28,8 @@ func TestTeamService_GetTeam(t *testing.T) {
 		team := &domain.Team{
 			TeamName: "Backend Team",
 			Members: []domain.TeamMember{
-				{UserId: uuid.NewString(), Username: "Alice", IsActive: true},
-				{UserId: uuid.NewString(), Username: "Bob", IsActive: true},
+				{UserId: "test-str-id", Username: "Alice", IsActive: true},
+				{UserId: "test-str-id", Username: "Bob", IsActive: true},
 			},
 		}
 

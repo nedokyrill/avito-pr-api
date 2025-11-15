@@ -159,3 +159,10 @@
 {"level":"fatal","timestamp":"2025-11-14T15:56:01.686+0300","caller":"app/app.go:46","msg":"error connecting to database, exiting...","pid":115505}
 {"level":"error","timestamp":"2025-11-14T16:06:38.689+0300","caller":"db/connect_to_db.go:20","msg":"unable to ping database: failed to connect to `user=postgres database=postgres`: hostname resolving error: lookup avito-pr-api-postgres: no such host\n","pid":127112}
 {"level":"fatal","timestamp":"2025-11-14T16:06:38.689+0300","caller":"app/app.go:46","msg":"error connecting to database, exiting...","pid":127112}
+{"level":"error","timestamp":"2025-11-15T17:16:51.157+0300","caller":"db/connect_to_db.go:20","msg":"unable to ping database: failed to connect to `user=postgres database=postgres`: hostname resolving error: lookup avito-pr-api-postgres: no such host\n","pid":163054}
+{"level":"fatal","timestamp":"2025-11-15T17:16:51.157+0300","caller":"app/app.go:46","msg":"error connecting to database, exiting...","pid":163054}
+{"level":"info","timestamp":"2025-11-15T17:17:54.851+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":164543}
+{"level":"info","timestamp":"2025-11-15T17:17:56.651+0300","caller":"app/app.go:87","msg":"shutting down server...","pid":164543}
+{"level":"info","timestamp":"2025-11-15T17:17:56.651+0300","caller":"server/server.go:44","msg":"shutdown completed before timeout.","pid":164543}
+{"level":"error","timestamp":"2025-11-15T18:17:34.864+0300","caller":"db/connect_to_db.go:20","msg":"unable to ping database: failed to connect to `user=postgres database=postgres`: hostname resolving error: lookup avito-pr-api-postgres: no such host\n","pid":239904}
+{"level":"fatal","timestamp":"2025-11-15T18:17:34.864+0300","caller":"app/app.go:46","msg":"error connecting to database, exiting...","pid":239904}

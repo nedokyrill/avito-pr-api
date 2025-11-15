@@ -113,6 +113,12 @@ func (s *PullRequestServiceImpl) ReassignReviewer(c *gin.Context) {
 			))
 			return
 		}
+
+		c.JSON(http.StatusConflict, domain.NewErrorResponse(
+			domain.NoCandidate,
+			"no active replacement candidate in team",
+		))
+		return
 	}
 
 	//nolint:gosec // G404: math/rand достаточно для случайного выбора ревьюеров
