@@ -74,7 +74,12 @@ func (s *PullRequestStorage) SetNeedMoreReviewers(ctx context.Context, prID stri
 	return nil
 }
 
-func (s *PullRequestStorage) CreatePullRequestWithReviewers(ctx context.Context, pr *domain.PullRequest, reviewerIDs []string, needMoreReviewers bool) error {
+func (s *PullRequestStorage) CreatePullRequestWithReviewers(
+	ctx context.Context,
+	pr *domain.PullRequest,
+	reviewerIDs []string,
+	needMoreReviewers bool,
+) error {
 	tx, err := s.db.Begin(ctx)
 	if err != nil {
 		return err

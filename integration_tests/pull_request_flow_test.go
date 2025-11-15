@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/stretchr/testify/require"
 )
@@ -25,31 +26,29 @@ func TestIntegrationPullRequestFlow(t *testing.T) {
 
 	// Создание команды
 	teamName := "Backend"
-	teamID := "team-backend-1"
-	sqlInsertTeam := `INSERT INTO teams (id, name) VALUES ($1, $2) RETURNING id`
-	var returnedTeamID string
-	err = conn.QueryRow(ctx, sqlInsertTeam, teamID, teamName).Scan(&returnedTeamID)
+	sqlInsertTeam := `INSERT INTO teams (name) VALUES ($1) RETURNING id`
+	var teamID uuid.UUID
+	err = conn.QueryRow(ctx, sqlInsertTeam, teamName).Scan(&teamID)
 	require.NoError(t, err, "команда не создалась")
-	require.Equal(t, teamID, returnedTeamID, "ID команды должен совпадать")
+	require.NotEqual(t, uuid.Nil, teamID, "ID команды должен быть сгенерирован")
 
-	// Создание пользователей
+	// Создание пользователей (ID - varchar, генерируем вручную)
 	users := []struct {
 		name     string
 		isActive bool
 		id       string
 	}{
-		{name: "Alice", isActive: true, id: "user-alice-1"},     // автор
-		{name: "Bob", isActive: true, id: "user-bob-1"},         // ревьювер 1
-		{name: "Charlie", isActive: true, id: "user-charlie-1"}, // ревьювер 2
-		{name: "David", isActive: false, id: "user-david-1"},    // неактивный (не должен быть назначен)
+		{name: "Alice", id: "user-alice-1", isActive: true},     // автор
+		{name: "Bob", id: "user-bob-1", isActive: true},         // ревьювер 1
+		{name: "Charlie", id: "user-charlie-1", isActive: true}, // ревьювер 2
+		{name: "David", id: "user-david-1", isActive: false},    // неактивный (не должен быть назначен)
 	}
 
-	sqlInsertUser := `INSERT INTO users (id, name, team_id, is_active) VALUES ($1, $2, $3, $4) RETURNING id`
+	sqlInsertUser := `INSERT INTO users (id, name, team_id, is_active) VALUES ($1, $2, $3, $4)`
 	for i := range users {
-		var returnedID string
-		err = conn.QueryRow(ctx, sqlInsertUser, users[i].id, users[i].name, teamID, users[i].isActive).Scan(&returnedID)
+		_, err = conn.Exec(ctx, sqlInsertUser, users[i].id, users[i].name, teamID, users[i].isActive)
 		require.NoError(t, err, "пользователь %s не создался", users[i].name)
-		require.Equal(t, users[i].id, returnedID, "ID пользователя должен совпадать")
+		require.NotEmpty(t, users[i].id, "ID пользователя должен быть задан")
 	}
 
 	authorID := users[0].id

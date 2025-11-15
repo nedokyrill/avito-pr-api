@@ -128,11 +128,10 @@ func TestPrReviewersStorage_ReassignReviewerAtomic(t *testing.T) {
 			WillReturnResult(pgxmock.NewResult("DELETE", 1))
 
 		mock.ExpectExec("INSERT INTO pr_reviewers").
-			WithArgs(pgxmock.AnyArg(), pgxmock.AnyArg(), pgxmock.AnyArg()).
+			WithArgs(pgxmock.AnyArg(), pgxmock.AnyArg()).
 			WillReturnResult(pgxmock.NewResult("INSERT", 1))
 
 		mock.ExpectCommit()
-		mock.ExpectRollback()
 
 		err = storage.ReassignReviewerAtomic(ctx, prID, oldReviewerID, newReviewerID)
 
@@ -179,7 +178,7 @@ func TestPrReviewersStorage_ReassignReviewerAtomic(t *testing.T) {
 			WillReturnResult(pgxmock.NewResult("DELETE", 1))
 
 		mock.ExpectExec("INSERT INTO pr_reviewers").
-			WithArgs(pgxmock.AnyArg(), pgxmock.AnyArg(), pgxmock.AnyArg()).
+			WithArgs(pgxmock.AnyArg(), pgxmock.AnyArg()).
 			WillReturnError(errors.New("insert error"))
 
 		mock.ExpectRollback()
@@ -206,7 +205,7 @@ func TestPrReviewersStorage_ReassignReviewerAtomic(t *testing.T) {
 			WillReturnResult(pgxmock.NewResult("DELETE", 1))
 
 		mock.ExpectExec("INSERT INTO pr_reviewers").
-			WithArgs(pgxmock.AnyArg(), pgxmock.AnyArg(), pgxmock.AnyArg()).
+			WithArgs(pgxmock.AnyArg(), pgxmock.AnyArg()).
 			WillReturnResult(pgxmock.NewResult("INSERT", 1))
 
 		mock.ExpectCommit().WillReturnError(errors.New("commit error"))

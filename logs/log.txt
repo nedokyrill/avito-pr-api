@@ -166,3 +166,70 @@
 {"level":"info","timestamp":"2025-11-15T17:17:56.651+0300","caller":"server/server.go:44","msg":"shutdown completed before timeout.","pid":164543}
 {"level":"error","timestamp":"2025-11-15T18:17:34.864+0300","caller":"db/connect_to_db.go:20","msg":"unable to ping database: failed to connect to `user=postgres database=postgres`: hostname resolving error: lookup avito-pr-api-postgres: no such host\n","pid":239904}
 {"level":"fatal","timestamp":"2025-11-15T18:17:34.864+0300","caller":"app/app.go:46","msg":"error connecting to database, exiting...","pid":239904}
+{"level":"info","timestamp":"2025-11-15T19:13:28.335+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":309523}
+{"level":"info","timestamp":"2025-11-15T19:13:31.284+0300","caller":"teamService/create_team.go:44","msg":"team created successfully","pid":309523,"team_name":"backend"}
+{"level":"info","timestamp":"2025-11-15T19:16:14.844+0300","caller":"teamService/create_team.go:44","msg":"team created successfully","pid":309523,"team_name":"frontend"}
+{"level":"info","timestamp":"2025-11-15T19:17:33.396+0300","caller":"teamService/get_team.go:42","msg":"team retrieved successfully","pid":309523,"team_name":"backend"}
+{"level":"info","timestamp":"2025-11-15T19:18:27.099+0300","caller":"userService/set_is_active.go:60","msg":"user active status updated","pid":309523,"user_id":"u2","is_active":false}
+{"level":"info","timestamp":"2025-11-15T19:18:38.577+0300","caller":"userService/set_is_active.go:60","msg":"user active status updated","pid":309523,"user_id":"u2","is_active":true}
+{"level":"info","timestamp":"2025-11-15T19:19:14.742+0300","caller":"userService/get_user_reviews.go:46","msg":"user reviews retrieved successfully","pid":309523,"user_id":"u1"}
+{"level":"info","timestamp":"2025-11-15T19:19:47.880+0300","caller":"pullRequestService/create_pull_request.go:99","msg":"PR created successfully","pid":309523,"pr_id":"pr-1001","reviewers_count":2}
+{"level":"info","timestamp":"2025-11-15T19:21:53.156+0300","caller":"teamService/create_team.go:44","msg":"team created successfully","pid":309523,"team_name":"small-team"}
+{"level":"info","timestamp":"2025-11-15T19:22:06.228+0300","caller":"pullRequestService/create_pull_request.go:99","msg":"PR created successfully","pid":309523,"pr_id":"pr-1002","reviewers_count":0}
+{"level":"info","timestamp":"2025-11-15T19:23:46.635+0300","caller":"teamService/create_team.go:44","msg":"team created successfully","pid":309523,"team_name":"inactive-team"}
+{"level":"info","timestamp":"2025-11-15T19:24:19.876+0300","caller":"pullRequestService/create_pull_request.go:99","msg":"PR created successfully","pid":309523,"pr_id":"pr-1004","reviewers_count":0}
+{"level":"info","timestamp":"2025-11-15T19:25:30.885+0300","caller":"pullRequestService/merge_pull_request.go:65","msg":"PR lifecycle metric recorded","pid":309523,"pr_id":"pr-1001","lifecycle_hours":-2.9047194962997223}
+{"level":"info","timestamp":"2025-11-15T19:25:30.886+0300","caller":"pullRequestService/merge_pull_request.go:83","msg":"PR merged successfully","pid":309523,"pr_id":"pr-1001"}
+{"level":"info","timestamp":"2025-11-15T19:25:42.368+0300","caller":"pullRequestService/merge_pull_request.go:83","msg":"PR merged successfully","pid":309523,"pr_id":"pr-1001"}
+{"level":"info","timestamp":"2025-11-15T19:25:43.528+0300","caller":"pullRequestService/merge_pull_request.go:83","msg":"PR merged successfully","pid":309523,"pr_id":"pr-1001"}
+{"level":"info","timestamp":"2025-11-15T19:27:06.924+0300","caller":"pullRequestService/create_pull_request.go:99","msg":"PR created successfully","pid":309523,"pr_id":"pr-2001","reviewers_count":2}
+{"level":"info","timestamp":"2025-11-15T19:27:19.304+0300","caller":"pullRequestService/merge_pull_request.go:65","msg":"PR lifecycle metric recorded","pid":309523,"pr_id":"pr-2001","lifecycle_hours":-2.9965597521125}
+{"level":"info","timestamp":"2025-11-15T19:27:19.304+0300","caller":"pullRequestService/merge_pull_request.go:83","msg":"PR merged successfully","pid":309523,"pr_id":"pr-2001"}
+{"level":"info","timestamp":"2025-11-15T19:27:52.313+0300","caller":"pullRequestService/create_pull_request.go:99","msg":"PR created successfully","pid":309523,"pr_id":"pr-2002","reviewers_count":2}
+{"level":"info","timestamp":"2025-11-15T19:29:42.966+0300","caller":"teamService/create_team.go:44","msg":"team created successfully","pid":309523,"team_name":"payments-team"}
+{"level":"info","timestamp":"2025-11-15T19:30:06.595+0300","caller":"teamService/get_team.go:42","msg":"team retrieved successfully","pid":309523,"team_name":"payments-team"}
+{"level":"info","timestamp":"2025-11-15T19:30:35.962+0300","caller":"pullRequestService/create_pull_request.go:99","msg":"PR created successfully","pid":309523,"pr_id":"pr-payments-001","reviewers_count":2}
+{"level":"info","timestamp":"2025-11-15T19:31:10.802+0300","caller":"userService/get_user_reviews.go:46","msg":"user reviews retrieved successfully","pid":309523,"user_id":"dev-003"}
+{"level":"info","timestamp":"2025-11-15T19:31:49.773+0300","caller":"pullRequestService/reassign_reviewer.go:150","msg":"reviewer reassigned successfully","pid":309523,"pr_id":"pr-payments-001","old_user_id":"dev-003","new_user_id":"dev-005"}
+{"level":"info","timestamp":"2025-11-15T19:32:05.974+0300","caller":"pullRequestService/create_pull_request.go:99","msg":"PR created successfully","pid":309523,"pr_id":"pr-payments-002","reviewers_count":2}
+{"level":"info","timestamp":"2025-11-15T19:32:43.856+0300","caller":"userService/set_is_active.go:60","msg":"user active status updated","pid":309523,"user_id":"dev-003","is_active":false}
+{"level":"info","timestamp":"2025-11-15T19:33:03.062+0300","caller":"pullRequestService/create_pull_request.go:99","msg":"PR created successfully","pid":309523,"pr_id":"pr-payments-003","reviewers_count":2}
+{"level":"info","timestamp":"2025-11-15T19:33:31.464+0300","caller":"teamService/get_team.go:42","msg":"team retrieved successfully","pid":309523,"team_name":"payments-team"}
+{"level":"info","timestamp":"2025-11-15T19:34:28.015+0300","caller":"pullRequestService/merge_pull_request.go:65","msg":"PR lifecycle metric recorded","pid":309523,"pr_id":"pr-payments-003","lifecycle_hours":-2.976400558961111}
+{"level":"info","timestamp":"2025-11-15T19:34:28.015+0300","caller":"pullRequestService/merge_pull_request.go:83","msg":"PR merged successfully","pid":309523,"pr_id":"pr-payments-003"}
+{"level":"info","timestamp":"2025-11-15T19:34:45.794+0300","caller":"pullRequestService/merge_pull_request.go:65","msg":"PR lifecycle metric recorded","pid":309523,"pr_id":"pr-payments-001","lifecycle_hours":-2.930601032807222}
+{"level":"info","timestamp":"2025-11-15T19:34:45.794+0300","caller":"pullRequestService/merge_pull_request.go:83","msg":"PR merged successfully","pid":309523,"pr_id":"pr-payments-001"}
+{"level":"info","timestamp":"2025-11-15T19:35:15.371+0300","caller":"pullRequestService/merge_pull_request.go:83","msg":"PR merged successfully","pid":309523,"pr_id":"pr-payments-001"}
+{"level":"info","timestamp":"2025-11-15T19:35:33.142+0300","caller":"userService/set_is_active.go:60","msg":"user active status updated","pid":309523,"user_id":"dev-003","is_active":true}
+{"level":"info","timestamp":"2025-11-15T19:37:49.126+0300","caller":"teamService/create_team.go:44","msg":"team created successfully","pid":309523,"team_name":"test-team"}
+{"level":"info","timestamp":"2025-11-15T19:41:05.841+0300","caller":"userService/deactivate_team_members.go:90","msg":"team members deactivated","pid":309523,"team_name":"test-team","deactivated_count":1,"reassignments_count":0}
+{"level":"info","timestamp":"2025-11-15T19:41:30.190+0300","caller":"userService/deactivate_team_members.go:90","msg":"team members deactivated","pid":309523,"team_name":"test-team","deactivated_count":2,"reassignments_count":0}
+{"level":"info","timestamp":"2025-11-15T19:41:53.519+0300","caller":"pullRequestService/create_pull_request.go:99","msg":"PR created successfully","pid":309523,"pr_id":"pr-deactivate-001","reviewers_count":2}
+{"level":"info","timestamp":"2025-11-15T19:42:28.980+0300","caller":"userService/set_is_active.go:60","msg":"user active status updated","pid":309523,"user_id":"user-1","is_active":true}
+{"level":"info","timestamp":"2025-11-15T19:42:33.668+0300","caller":"userService/set_is_active.go:60","msg":"user active status updated","pid":309523,"user_id":"user-2","is_active":true}
+{"level":"info","timestamp":"2025-11-15T19:42:57.858+0300","caller":"userService/deactivate_team_members.go:90","msg":"team members deactivated","pid":309523,"team_name":"test-team","deactivated_count":2,"reassignments_count":2}
+{"level":"info","timestamp":"2025-11-15T19:44:24.456+0300","caller":"teamService/get_team.go:42","msg":"team retrieved successfully","pid":309523,"team_name":"test-team"}
+{"level":"info","timestamp":"2025-11-15T19:44:48.476+0300","caller":"userService/deactivate_team_members.go:90","msg":"team members deactivated","pid":309523,"team_name":"test-team","deactivated_count":2,"reassignments_count":0}
+{"level":"info","timestamp":"2025-11-15T19:51:05.222+0300","caller":"app/app.go:87","msg":"shutting down server...","pid":309523}
+{"level":"info","timestamp":"2025-11-15T19:51:05.224+0300","caller":"server/server.go:44","msg":"shutdown completed before timeout.","pid":309523}
+{"level":"info","timestamp":"2025-11-15T19:51:26.345+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":342471}
+{"level":"info","timestamp":"2025-11-15T19:52:57.559+0300","caller":"teamService/create_team.go:44","msg":"team created successfully","pid":342471,"team_name":"test-team"}
+{"level":"info","timestamp":"2025-11-15T19:53:15.524+0300","caller":"pullRequestService/create_pull_request.go:99","msg":"PR created successfully","pid":342471,"pr_id":"pr-deactivate-001","reviewers_count":2}
+{"level":"info","timestamp":"2025-11-15T19:53:27.799+0300","caller":"userService/deactivate_team_members.go:90","msg":"team members deactivated","pid":342471,"team_name":"test-team","deactivated_count":2,"reassignments_count":2}
+{"level":"info","timestamp":"2025-11-15T19:55:49.599+0300","caller":"teamService/create_team.go:44","msg":"team created successfully","pid":342471,"team_name":"small-team"}
+{"level":"info","timestamp":"2025-11-15T19:56:17.545+0300","caller":"pullRequestService/create_pull_request.go:99","msg":"PR created successfully","pid":342471,"pr_id":"pr-small-001","reviewers_count":2}
+{"level":"info","timestamp":"2025-11-15T19:56:31.653+0300","caller":"userService/deactivate_team_members.go:90","msg":"team members deactivated","pid":342471,"team_name":"small-team","deactivated_count":2,"reassignments_count":2}
+{"level":"info","timestamp":"2025-11-15T20:18:31.409+0300","caller":"app/app.go:87","msg":"shutting down server...","pid":342471}
+{"level":"info","timestamp":"2025-11-15T20:18:31.409+0300","caller":"server/server.go:44","msg":"shutdown completed before timeout.","pid":342471}
+{"level":"info","timestamp":"2025-11-15T20:59:58.181+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":399325}
+{"level":"info","timestamp":"2025-11-15T21:00:32.596+0300","caller":"app/app.go:87","msg":"shutting down server...","pid":399325}
+{"level":"info","timestamp":"2025-11-15T21:00:32.596+0300","caller":"server/server.go:44","msg":"shutdown completed before timeout.","pid":399325}
+{"level":"info","timestamp":"2025-11-15T21:03:37.135+0300","caller":"db/connect_to_db.go:24","msg":"connected to Postgres successfully","pid":403476}
+{"level":"info","timestamp":"2025-11-15T21:05:05.220+0300","caller":"teamService/create_team.go:44","msg":"team created successfully","pid":403476,"team_name":"small-team"}
+{"level":"info","timestamp":"2025-11-15T21:05:32.383+0300","caller":"teamService/create_team.go:44","msg":"team created successfully","pid":403476,"team_name":"test-team"}
+{"level":"info","timestamp":"2025-11-15T21:06:36.940+0300","caller":"pullRequestService/create_pull_request.go:99","msg":"PR created successfully","pid":403476,"pr_id":"pr-deactivate-001","reviewers_count":2}
+{"level":"info","timestamp":"2025-11-15T21:07:10.490+0300","caller":"userService/deactivate_team_members.go:115","msg":"team members deactivated","pid":403476,"team_name":"test-team","deactivated_count":2,"reassignments_count":2}
+{"level":"info","timestamp":"2025-11-15T21:07:39.825+0300","caller":"teamService/create_team.go:44","msg":"team created successfully","pid":403476,"team_name":"small-team"}
+{"level":"info","timestamp":"2025-11-15T21:07:56.777+0300","caller":"pullRequestService/create_pull_request.go:99","msg":"PR created successfully","pid":403476,"pr_id":"pr-small-001","reviewers_count":2}
+{"level":"info","timestamp":"2025-11-15T21:08:39.642+0300","caller":"app/app.go:87","msg":"shutting down server...","pid":403476}
+{"level":"info","timestamp":"2025-11-15T21:08:39.642+0300","caller":"server/server.go:44","msg":"shutdown completed before timeout.","pid":403476}

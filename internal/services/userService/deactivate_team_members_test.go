@@ -40,6 +40,7 @@ func TestUserService_DeactivateTeamMembers(t *testing.T) {
 		userID2 := testUserID2
 		prID := testPRID123
 		authorID := testUserID3
+		userID4 := "user-4" // Дополнительный активный участник для замены ревьювера
 
 		requestBody := `{
 			"team_name": "` + teamName + `",
@@ -52,6 +53,7 @@ func TestUserService_DeactivateTeamMembers(t *testing.T) {
 				{UserId: authorID, Username: "Alice", IsActive: true},
 				{UserId: userID1, Username: "Bob", IsActive: true},
 				{UserId: userID2, Username: "Charlie", IsActive: true},
+				{UserId: userID4, Username: "David", IsActive: true}, // Активный участник для замены
 			},
 		}
 

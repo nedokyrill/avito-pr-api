@@ -16,10 +16,8 @@ type DeactivateTeamMembersResponse struct {
 	Reassignments      []ReviewerReassignment `json:"reassignments"`
 }
 
-// Инструкция для переназначения одного ревьювера
 type ReviewerReassignment struct {
 	PrID          string `json:"pr_id"`
 	OldReviewerID string `json:"old_reviewer_id"`
 	NewReviewerID string `json:"new_reviewer_id,omitempty"` // пустой = удалить без замены
 }
-

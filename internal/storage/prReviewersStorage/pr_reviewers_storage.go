@@ -2,7 +2,6 @@ package prReviewersStorage
 
 import (
 	"context"
-	"time"
 
 	"github.com/nedokyrill/avito-pr-api/internal/domain"
 	"github.com/nedokyrill/avito-pr-api/pkg/utils/db"
@@ -87,7 +86,12 @@ func (s *PrReviewersStorage) GetPRsByReviewer(ctx context.Context, userID string
 	return prs, nil
 }
 
-func (s *PrReviewersStorage) ReassignReviewerAtomic(ctx context.Context, prID, oldReviewerID, newReviewerID string) error {
+func (s *PrReviewersStorage) ReassignReviewerAtomic(
+	ctx context.Context,
+	prID,
+	oldReviewerID,
+	newReviewerID string,
+) error {
 	tx, err := s.db.Begin(ctx)
 	if err != nil {
 		return err
@@ -101,9 +105,8 @@ func (s *PrReviewersStorage) ReassignReviewerAtomic(ctx context.Context, prID, o
 	}
 
 	insertQuery := `
-		INSERT INTO pr_reviewers (pull_request_id, reviewer_id, assigned_at)
-		VALUES ($1, $2, $3)`
-	_, err = tx.Exec(ctx, insertQuery, prID, newReviewerID, time.Now())
+		INSERT INTO pr_reviewers (pull_request_id, reviewer_id) VALUES ($1, $2)`
+	_, err = tx.Exec(ctx, insertQuery, prID, newReviewerID)
 	if err != nil {
 		return err
 	}

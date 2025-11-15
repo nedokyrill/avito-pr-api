@@ -78,7 +78,11 @@ func (s *TeamStorage) GetTeamByName(ctx context.Context, teamName string) (*doma
 	return team, nil
 }
 
-func (s *TeamStorage) CreateTeamWithMembers(ctx context.Context, teamName string, members []domain.TeamMember) (uuid.UUID, error) {
+func (s *TeamStorage) CreateTeamWithMembers(
+	ctx context.Context,
+	teamName string,
+	members []domain.TeamMember,
+) (uuid.UUID, error) {
 	tx, err := s.db.Begin(ctx)
 	if err != nil {
 		return uuid.Nil, err
@@ -94,11 +98,7 @@ func (s *TeamStorage) CreateTeamWithMembers(ctx context.Context, teamName string
 
 	userQuery := `
 		INSERT INTO users (id, name, team_id, is_active)
-		VALUES ($1, $2, $3, $4)
-		ON CONFLICT (id) DO UPDATE 
-		SET name = EXCLUDED.name,
-		    team_id = EXCLUDED.team_id,
-		    is_active = EXCLUDED.is_active`
+		VALUES ($1, $2, $3, $4)`
 
 	for _, member := range members {
 		_, err = tx.Exec(ctx, userQuery, member.UserId, member.Username, teamID, member.IsActive)
@@ -114,14 +114,19 @@ func (s *TeamStorage) CreateTeamWithMembers(ctx context.Context, teamName string
 	return teamID, nil
 }
 
-func (s *TeamStorage) DeactivateTeamMembers(ctx context.Context, teamName string, userIDs []string, reassignments []domain.ReviewerReassignment) ([]string, error) {
+func (s *TeamStorage) DeactivateTeamMembers(
+	ctx context.Context,
+	teamName string,
+	userIDs []string,
+	reassignments []domain.ReviewerReassignment,
+) ([]string, error) {
 	tx, err := s.db.Begin(ctx)
 	if err != nil {
 		return nil, err
 	}
 	defer func() { _ = tx.Rollback(ctx) }()
 
-	// 1. Деактивируем пользователей
+	// Деактивируем пользователей
 	query := `
 		UPDATE users u
 		SET is_active = false
@@ -159,20 +164,18 @@ func (s *TeamStorage) DeactivateTeamMembers(ctx context.Context, teamName string
 		return nil, err
 	}
 
-	// 2. Применяем переназначения ревьюверов
+	// Переназначаем ревьюверов
 	for _, reassignment := range reassignments {
-		// Удаляем старого ревьювера
 		deleteQuery := `DELETE FROM pr_reviewers WHERE pull_request_id = $1 AND reviewer_id = $2`
 		_, err = tx.Exec(ctx, deleteQuery, reassignment.PrID, reassignment.OldReviewerID)
 		if err != nil {
 			return nil, err
 		}
 
-		// Если есть новый ревьювер - добавляем
 		if reassignment.NewReviewerID != "" {
 			insertQuery := `
 				INSERT INTO pr_reviewers (pull_request_id, reviewer_id, assigned_at)
-				VALUES ($1, $2, NOW())`
+				VALUES ($1, $2)`
 			_, err = tx.Exec(ctx, insertQuery, reassignment.PrID, reassignment.NewReviewerID)
 			if err != nil {
 				return nil, err
