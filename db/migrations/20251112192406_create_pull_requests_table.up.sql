@@ -1,4 +1,5 @@
 create type pr_status as enum ('OPEN', 'MERGED');
+-- несмотря на советы, что лучше в таких случаях создавать отдельную таблицу, решил что кол-во статусов пр вряд ли когда-то изменится
 
 create table if not exists pull_requests (
     id varchar(255) primary key,

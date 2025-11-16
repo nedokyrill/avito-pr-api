@@ -32,7 +32,7 @@ func TestIntegrationPullRequestFlow(t *testing.T) {
 	require.NoError(t, err, "команда не создалась")
 	require.NotEqual(t, uuid.Nil, teamID, "ID команды должен быть сгенерирован")
 
-	// Создание пользователей (ID - varchar, генерируем вручную)
+	// Создание пользователей
 	users := []struct {
 		name     string
 		isActive bool
